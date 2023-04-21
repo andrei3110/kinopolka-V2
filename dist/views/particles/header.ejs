@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Kino-polka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/icon.jpg" type="image/x-icon">
+    
+    <link href="/css/style1.css" rel="stylesheet">
+    <link href="/css/genresButton.css" rel="stylesheet">
+    <link href="/css/particles.css" rel="stylesheet">
+    <link href="/css/authForm.css" rel="stylesheet">
+    <link href="/css/menu.css" rel="stylesheet">
+    <link href="/css/genresObjects.css" rel="stylesheet">
+    <link href="/css/filmObject.css" rel="stylesheet">
+    <link href="/css/buttons.css" rel="stylesheet">
+    <link href="/css/media1.css" rel="stylesheet">
+    <link href="/css/media2.css" rel="stylesheet">
+    <link href="/css/icons.css" rel="stylesheet">
+   
+    <div class="header">
+        <div class="header__content">
+            <div class="search">
+                <form action="/home" method="post">
+                    <input name="name" class="search__films" placeholder="введите название фильма">
+                    <button type="submit" class="search__films__button"><span class="search-icon"><i class="fa fa-search fa-2x" aria-hidden="true"></i></span></button>
+                </form>
+            </div>
+            <input type="checkbox" id="side-checkbox" />
+
+<div class="side-panel">
+    <label class="side-button-2" for="side-checkbox">+</label>
+    <div class="side-title">Меню</div>
+
+    <p>
+
+        <a href="/home" class="side__panel__btn"><%- include('../icons/home__icon.ejs') %> Главная</a>
+
+        <% for (let i = 0; i < categories.length; i++) { %>
+        <a href="/categories/<%=  categories[i].id %>" class="side__panel__btn">
+            <%= categories[i].name %>
+        </a>
+        <% } %>
+    </p>
+</div>
+
+<div class="side-button-1-wr">
+    <label class="side-button-1" for="side-checkbox">
+        <div class="side-b side-open"><%- include('../icons/menu__icons.ejs') %></div>
+        <div class="side-b side-close"><%- include('../icons/menu__icons.ejs') %></div>
+    </label>
+</div>
+            <div class="header__name">Kino-polka</div>
+
+            <% if (auth) { %>
+                <button class="dropbtn"><%- include('../icons/user-circle__icons.ejs') %></button>
+            <div class="dropdown">
+               
+
+                <div id="myDropdown" class="dropdown-content">
+                    <% if (auth) { %>
+                        <a href="/cart"><button class="btn bascet">корзина</button></a>
+                    <% if (admin) { %>
+                    <a href="/items/create"><button class="btn add">добавить</button></a>
+                    <a href="/users"><button class="btn users">пользователи</button></a>
+                    <% } %>
+                    <a href="/logout"><button class=" btn LogIn">выход</button></a>
+                    <% } else { %>
+                    <a href="/enter"><button class=" btn LogIn">вход</button></a>
+                    <% } %>   
+                </div>
+            </div>
+
+            <% } else { %>
+            <a href="/enter" class=" login__button"><%- include('../icons/enter__icon.ejs') %></a>
+            <% } %>
+
+            <script>
+                const dropBtn = document.querySelector('.dropbtn')
+                dropBtn.addEventListener('click', function myFunction() {
+                    document.getElementById("myDropdown").classList.toggle("show");
+                })
+            </script>
+
+        </div>
+    </div>
+    
+    <script src="/js/sliderController.js" defer></script>
+</head>
+
+<body>

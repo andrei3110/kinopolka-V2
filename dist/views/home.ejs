@@ -1,0 +1,113 @@
+<%- include('particles/header.ejs') %>
+
+<div class="content">
+
+    <div class="genres__tags">
+        <div class="genres__tags__wrapper">
+            <% for (let i=0; i < genres.length; i++) { %>
+            <form class="tags__form" action="/search/byGenre" method="post">
+                <input type="submit" class="tags__item" name="name" value="<%= genres[i].name %>">
+            </form>
+            <% } %>
+        </div>
+    </div>
+
+    <div class="grid">
+
+        <div class="grid__side">
+            <div class="sidebar">
+                <div class="sidebar__wrapper">
+
+                    <div class="menu">
+                        <a href="/home"><button class="menu__button">
+                                Главная
+                            </button></a>
+                        <a href="/categories/1"><button class="menu__button">
+                                Фильмы
+                            </button></a>
+                        <a href="/categories/2"><button class="menu__button">
+                                Сериалы
+                            </button></a>
+                        <a href="/categories/3"><button class="menu__button">
+                                Мультфильмы
+                            </button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="grid__content">
+            <!-- SLIDER -->
+            <div class="slider">
+
+                <div class="sliders__pictures">
+                    <div class="slider__wrapper">
+                        <div class="slider__item"><img class="slider__image" src="./prevew/oblivion.webp"></div>
+                        <div class="slider__item"><img class="slider__image" src="./prevew/HomeAlone.jpg"></div>
+                        <div class="slider__item"><img class="slider__image" src="./prevew/fantasticBeasts3.webp"></div>
+                        <div class="slider__item"><img class="slider__image" src="./prevew/harryPotter.webp"></div>
+                        <div class="slider__item"><img class="slider__image" src="./prevew/arcane.webp"></div>
+                        <div class="slider__item"><img class="slider__image" src="./prevew/jocker.webp"></div>
+
+                        <div class="slider__item"><img class="slider__image--phone" src="./prevew/martain-phone.jpg"></div>
+                        <div class="slider__item"><img class="slider__image--phone" src="./prevew/avatar-phone.jpg"></div>
+                        <div class="slider__item"><img class="slider__image--phone" src="./prevew/prizrak-phone.jpg"></div>
+                        <div class="slider__item"><img class="slider__image--phone" src="./prevew/stalingrad-phone.jpg"></div>
+                        <div class="slider__item"><img class="slider__image--phone" src="./prevew/maleficent-phone.jpg"></div>
+
+                    </div>
+
+                </div>
+
+                <button class="slider__control slider__control--l" id="right"><%- include('icons/chevron-left__icon.ejs') %></button>
+                <button class="slider__control slider__control--r" id="left"><%- include('icons/chevron-right__icon.ejs') %></button>
+
+            </div>
+
+
+            <!-- SUBSCRIBE -->
+            <div class="subscribe">
+                <div class="subscribe__wrapper">
+                    <div class="subscribe__text">
+                        <font size="60px" color="white">Подписка</font>
+                        <font size="50px" color="red">Kino+</font>
+                        <p>
+                            <font size="5px" color="white">для доступа к платным фильмам</font>
+                        </p>
+                        <p>
+                            <font size="5px" color="#778cde">
+                                <h4>30 дней бесплатно</h4>
+                            </font>
+                        </p>
+                    </div>
+                    <a class="subscribe__button" href="/subscribe">Попробовать Kino +</a>
+
+                </div>
+                <div class="subscribe__paid">
+                    <div class="subscribe__container">
+                    <% for (let i=0; i < items.length; i++) { %>
+                    <a href="/des__film/<%= items[i].id %>" style="color: #ffffff;text-decoration: none">
+                            
+                            <div class="subscribe__item">
+                                <div class="subscribe__item--status">подписка</div>
+                                <img class="subscribe__item-image" src="/img/<%= items[i].image %>">
+
+                                <div class="subscribe__item-name">
+                                    <%= items[i].name %>
+                                </div>
+                            </div>
+                           
+                    </a>
+                    <% } %>
+                </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- FOOTER -->
+
+
+    <%- include('particles/footer.ejs') %>

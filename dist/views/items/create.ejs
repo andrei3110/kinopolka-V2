@@ -1,0 +1,51 @@
+<%- include('../particles/header.ejs') %>
+
+
+<div class="content">
+    <form action="/AddItems" method="post">
+
+        <div class="create__genre">
+            <% for (let i=0; i < genres.length; i++) { %>
+            <div class="create__genre--items">
+                <input type="checkbox" class="checkbox" name="check" value="<%= genres[i].name %>">
+                <label class="create__genre--items__name"><%= genres[i].name %></label>
+            </div>
+            <% } %>
+        </div>
+
+        <div class="create__item__block1">
+            <input class="create__item--items" name="description" placeholder="описание">
+
+            <% for (let i=0; i < categories.length; i++) { %>
+            <div class="create__radio__items">
+                <input type="radio" class="radio" name="check__radio" value="<%= categories[i].id %>">
+                <label class="radio__items"><%= categories[i].name %></label>
+            </div>
+
+
+            <% } %>
+
+
+            <input class="create__item--items" name="country" placeholder="страна" required>
+            <input class="create__item--items" name="name" placeholder="имя" required>
+            <input class="create__item--items" name="image" type="file" placeholder="файл" required>
+        </div>
+        <div class="create__item__block2">
+            <input class="create__item--items" name="year" placeholder="год" required>
+            <input class="create__item--items" name="status" placeholder="статус" required>
+            <input class="create__item--items" name="video" placeholder="видео" required>
+            <input class="create__item--items" name="treller" placeholder="треллер" required>
+        </div>
+        <div class="cerate__description">
+            <input class="cerate__description--items" name="actor" placeholder="актеры" required>
+            <input class="cerate__description--items" name="producer" placeholder="продюсер" required>
+            <input class="cerate__description--items" I name="regicer" placeholder="режиссер" required>
+            <input class="cerate__description--items" name="screenwriter" placeholder="сценарист" required>
+            <input class="cerate__description--items" name="operator" placeholder="оператор" required>
+        </div>
+        <input class="btn AddBtn" type="submit" value="опубликовать">
+    </form>
+
+</div>
+
+<%- include('../particles/footer.ejs') %>

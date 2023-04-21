@@ -1,0 +1,71 @@
+<%- include('../particles/header.ejs') %>
+
+<div class="content">
+    <%- include('../particles/tags.ejs') %>
+
+
+    <div class="film">
+
+        <% for (let i=0; i < items.length; i++) { %>
+
+        <a href="/des__film/<%= items[i].id %>" class="descrip">
+            <div class="film__object" id="film__object">
+
+                <h2 class="film__name">
+                    <%= items[i].name %>
+                </h2>
+                <div class="film__country">
+                    <%= items[i].country %>
+                </div>
+                <div class="film__genre">
+                    <%= items[i].genre %>
+                </div>
+                <% if (items[i].status == "бесплатно") { %>
+                <div class="film__status free">
+                    <%= items[i].status %>
+                </div>
+                <% } else { %>
+                <div class="film__status sub">
+                    <%= items[i].status %>
+                </div>
+
+                <% } %>
+
+                <img class="film__image" src="/img/<%= items[i].image %>">
+                <div>
+
+
+                    <% if (auth) { %>
+                    <form action="/save__Video" method="post">
+
+                        <input type="hidden" value="<%= items[i].name %>" name="name">
+                        <input type="hidden" value=" <%= items[i].country %>" name="country">
+                        <input type="hidden" value="<%= items[i].star %>" name="star">
+                        <input type="hidden" value="<%= items[i].genre %>" name="genre">
+                        <input type="hidden" value="<%= items[i].image %>" name="image">
+                        <button class="save__InBascet"  type="submit"><%- include('../icons/bookmark__icon.ejs') %><span class="save__InBascet--text">В избранное</span></button>
+
+                    </form>
+                    <% if (admin) { %>
+                    <form action="/delete__movies/<%= items[i].id %>" method="post">
+                        <button class="delete__moves"><%- include('../icons/delete__icon.ejs') %></button>
+                    </form>
+
+                    <% } %>
+                    <% } %>
+                </div>
+            </div>
+        </a>
+        <% } %>
+
+
+    </div>
+    <% for (let i = 1; i <= count; i++) { %>
+    <a class="page" href="?page=<%= i %>">
+        <div><%= i %></div>
+    </a>
+    <% } %>
+    <div class="hollow"></div>
+</div>
+
+<%- include('../particles/footer.ejs') %>
