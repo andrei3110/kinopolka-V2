@@ -158,22 +158,14 @@
     color: white
   }
   
-  /* .regist {
-    position: absolute;
-    font-size: 40px;
-    font-family: Century Gothic;
-    left: 100px;
-    top: 20px;
-  
-  } */
-  
+
   .loginForm {
     text-decoration: none;
     color: white;
     position:relative;
     top:50%;
     right:45%;
-    font-family: Century Gothic;
+    font-family:Century Gothic,arial,sans-serif;
   }
   
   
@@ -207,7 +199,7 @@
     right: 20px;
     border: none;
     color: white;
-    font-family: Century Gothic;
+    font-family:Century Gothic,arial,sans-serif;
     font-size: 20px;
     /* position: absolute; */
     background-color: rgb(48, 47, 47);
