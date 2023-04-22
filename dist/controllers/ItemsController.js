@@ -107,15 +107,15 @@ class ItemsController {
     }
     AddItems(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { name, image, description, producer, actor, screenwriter, operator, regicer, year, age, country, status, video, treller } = req.body;
+            const { id, name, image, description, producer, actor, screenwriter, operator, regicer, year, age, country, status, video, treller } = req.body;
             let genres = yield prisma.genres.findMany({});
+            let mass = [];
             let all = "";
             let one = "";
             for (let i = 0; i < genres.length; i++) {
-                one = String(req.body.check);
-                all = one + ',';
+                one = req.body.check;
             }
-            yield prisma.items.create({
+            const items = yield prisma.items.create({
                 data: {
                     name: name,
                     image: image,
@@ -128,13 +128,20 @@ class ItemsController {
                     type: Number(req.body.check__radio),
                     country: country,
                     age: age,
-                    genre: all,
                     year: Number(year),
                     status: status,
                     video: video,
                     treller: treller
                 }
             });
+            for (let i = 0; i < one.length; i++) {
+                const items__genres = yield prisma.items__genres.create({
+                    data: {
+                        item__id: Number(items.id),
+                        genres__id: Number(one[i])
+                    }
+                });
+            }
             req.session.status = status;
             res.redirect('items/create');
         });
@@ -366,6 +373,62 @@ class ItemsController {
             });
             const genres = yield prisma.genres.findMany({});
             res.redirect("/movies");
+        });
+    }
+    addGenre(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const categories = yield prisma.categories.findMany({});
+            res.render('items/create__genres', {
+                name: req.session.name,
+                auth: req.session.auth,
+                status: req.session.status,
+                admin: req.session.admin,
+                category: req.session.category,
+                dark__light: req.session.dark__light,
+                'categories': categories,
+            });
+        });
+    }
+    addCategories(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const categories = yield prisma.categories.findMany({});
+            res.render('items/create__categories', {
+                name: req.session.name,
+                auth: req.session.auth,
+                status: req.session.status,
+                admin: req.session.admin,
+                category: req.session.category,
+                dark__light: req.session.dark__light,
+                'categories': categories,
+            });
+        });
+    }
+    createGenre(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { cartoonGenre, genre } = req.body;
+            const categories = yield prisma.categories.findMany({});
+            yield prisma.genres.create({
+                data: {
+                    name: genre
+                }
+            });
+            yield prisma.cartoonGenres.create({
+                data: {
+                    name: cartoonGenre
+                }
+            });
+            res.redirect('/');
+        });
+    }
+    createCategories(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { categories } = req.body;
+            yield prisma.categories.create({
+                data: {
+                    name: categories
+                }
+            });
+            res.redirect('/');
         });
     }
 }

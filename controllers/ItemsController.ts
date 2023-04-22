@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { items, users, bascet, comments,categories, PrismaClient } from '@prisma/client';
+import { items, users, bascet,items__genres, comments,categories, PrismaClient } from '@prisma/client';
 import { validateHeaderValue } from 'http';
 // import "./authorizationcontroller"
 const prisma: PrismaClient = new PrismaClient();
@@ -94,18 +94,19 @@ export class ItemsController {
         });
     }
     async AddItems(req: Request, res: Response) {
-        const { name, image, description, producer, actor, screenwriter, operator, regicer,year, age, country,status, video, treller } = req.body;
+        const {id, name, image, description, producer, actor, screenwriter, operator, regicer,year, age, country,status, video, treller } = req.body;
        
         let genres = await prisma.genres.findMany({})
-        
+        let mass = []
         let all = "";
         let one = "";
         for (let i= 0; i < genres.length; i++ ){
-            one = String(req.body.check)
-            all = one + ',';
+            one = req.body.check
+           
         }
-
-        await prisma.items.create({
+        
+         
+        const items = await prisma.items.create({
             data: {
                 name: name,
                 image: image,
@@ -118,13 +119,20 @@ export class ItemsController {
                 type: Number(req.body.check__radio),
                 country: country,
                 age: age,
-                genre: all,      
                 year: Number(year),
                 status : status,
                 video:video,
                 treller:treller
             }
         });
+        for(let i = 0; i < one.length; i ++){
+            const items__genres = await prisma.items__genres.create({
+                    data:{
+                        item__id:Number(items.id),
+                        genres__id:Number(one[i])
+                    }
+                })
+            }
         req.session.status = status;
 
         res.redirect('items/create')
@@ -360,6 +368,7 @@ export class ItemsController {
             mark: req.session.mark
         })
     }
+
     async delete__moves(req: Request, res: Response) {
         const { id } = req.params;
         const items = await prisma.items.delete({
@@ -372,7 +381,59 @@ export class ItemsController {
         })
         res.redirect("/movies")
     }
+    async addGenre(req: Request, res: Response) {
+        const categories = await prisma.categories.findMany({})
 
+        res.render('items/create__genres', {
+            name:req.session.name,
+            auth: req.session.auth,
+            status: req.session.status,
+            admin: req.session.admin,
+            category: req.session.category,
+            dark__light: req.session.dark__light,
+            'categories':categories,
+        });
+    }
+    async addCategories(req: Request, res: Response) {
+ 
+        const categories = await prisma.categories.findMany({})
+
+        res.render('items/create__categories', {
+            name:req.session.name,
+            auth: req.session.auth,
+            status: req.session.status,
+            admin: req.session.admin,
+            category: req.session.category,
+            dark__light: req.session.dark__light,
+            'categories':categories,
+            
+        });
+    }
+    async createGenre(req: Request, res: Response) {
+        const {cartoonGenre, genre} = req.body;
+        const categories = await prisma.categories.findMany({})
+        await prisma.genres.create({
+            data:{
+                name:genre
+            }
+        })
+        await prisma.cartoonGenres.create({
+            data:{
+                name:cartoonGenre
+            }
+        })
+        res.redirect('/');
+    }
+    async createCategories(req: Request, res: Response) {
+        const {categories} = req.body;
+        await prisma.categories.create({
+            data:{
+                name:categories
+            }
+        })
+
+        res.redirect('/');
+    }
 }
 
 

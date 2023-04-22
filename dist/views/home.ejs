@@ -19,18 +19,10 @@
                 <div class="sidebar__wrapper">
 
                     <div class="menu">
-                        <a href="/home"><button class="menu__button">
-                                Главная
-                            </button></a>
-                        <a href="/categories/1"><button class="menu__button">
-                                Фильмы
-                            </button></a>
-                        <a href="/categories/2"><button class="menu__button">
-                                Сериалы
-                            </button></a>
-                        <a href="/categories/3"><button class="menu__button">
-                                Мультфильмы
-                            </button></a>
+                        <a href="/home"><button class="menu__button">Главная</button></a>
+                        <% for (let i = 0; i < categories.length; i++) { %>
+                            <a href="/categories/<%=  categories[i].id %>" ><button class="menu__button"><%= categories[i].name %></button></a>
+                        <% } %>
                     </div>
                 </div>
             </div>

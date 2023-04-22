@@ -2,17 +2,19 @@
 
 
 <div class="content">
+    <a href="/addGenres">жанры</a>
+    <a href="/addCategories">Категории</a>
     <form action="/AddItems" method="post">
 
         <div class="create__genre">
             <% for (let i=0; i < genres.length; i++) { %>
             <div class="create__genre--items">
-                <input type="checkbox" class="checkbox" name="check" value="<%= genres[i].name %>">
+                <input type="checkbox" class="checkbox" name="check" value="<%= genres[i].id %>">
                 <label class="create__genre--items__name"><%= genres[i].name %></label>
             </div>
             <% } %>
         </div>
-
+        
         <div class="create__item__block1">
             <input class="create__item--items" name="description" placeholder="описание">
 

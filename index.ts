@@ -53,6 +53,7 @@ app.use(session({ secret: "Secret", resave: false, saveUninitialized: true }));
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
+
 app.get("/", (req: Request, res: Response) => {
   itemsController.home(req, res);
 });
@@ -93,30 +94,34 @@ app.get("/movies", (req: Request, res: Response) => {
 });
 
 //AUTH//
-app.post("/register/Form", (req: Request, res: Response) => {
-  authController.registerForm(req, res);
-})
-app.get("/render/registration", (req: Request, res: Response) => {
+app.get("/register", (req: Request, res: Response) => {
   authController.renderRegistration(req, res);
 });
-app.get("/Logout", (req: Request, res: Response) => {
+app.post("/register", (req: Request, res: Response) => {
+  authController.registerForm(req, res);
+});
+
+app.get("/logout", (req: Request, res: Response) => {
   authController.logout(req, res);
 });
-app.get("/render/login", (req: Request, res: Response) => {
+app.get("/login", (req: Request, res: Response) => {
   authController.renderLogin(req, res);
 });
 app.get("/registration", (req: Request, res: Response) => {
   authController.renderRegistration(req, res);
 });
-app.get("/loginForm", (req: Request, res: Response) => {
-  authController.renderLogin(req, res);
-});
+// app.get("/loginForm", (req: Request, res: Response) => {
+//   authController.renderLogin(req, res);
+// });
 app.post("/login", (req: Request, res: Response) => {
   authController.login(req, res);
-})
+});
 app.get("/enter", (req: Request, res: Response) => {
   authController.renderLogin(req, res);
-})
+});
+
+
+
 app.get("/items/create", (req: Request, res: Response) => {
   itemsController.Add(req, res);
 });
@@ -153,7 +158,18 @@ app.post("/delete/comment/:id", (req: Request, res: Response) => {
 app.get("/cart", (req: Request, res: Response) => {
   itemsController.bascet(req, res);
 });
-
+app.get("/addGenres", (req: Request, res: Response) => {
+  itemsController.addGenre(req, res);
+});
+app.post("/addGenres", (req: Request, res: Response) => {
+  itemsController.createGenre(req, res);
+});
+app.get("/addCategories", (req: Request, res: Response) => {
+  itemsController.addCategories(req, res);
+});
+app.post("/addCategories", (req: Request, res: Response) => {
+  itemsController.createCategories(req, res);
+});
 app.get("/description", (req: Request, res: Response) => {
   itemsController.renderDes(req, res);
 });

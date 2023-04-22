@@ -68,24 +68,24 @@ app.get("/movies", (req, res) => {
     categoriesController.movies(req, res);
 });
 //AUTH//
-app.post("/register/Form", (req, res) => {
-    authController.registerForm(req, res);
-});
-app.get("/render/registration", (req, res) => {
+app.get("/register", (req, res) => {
     authController.renderRegistration(req, res);
 });
-app.get("/Logout", (req, res) => {
+app.post("/register", (req, res) => {
+    authController.registerForm(req, res);
+});
+app.get("/logout", (req, res) => {
     authController.logout(req, res);
 });
-app.get("/render/login", (req, res) => {
+app.get("/login", (req, res) => {
     authController.renderLogin(req, res);
 });
 app.get("/registration", (req, res) => {
     authController.renderRegistration(req, res);
 });
-app.get("/loginForm", (req, res) => {
-    authController.renderLogin(req, res);
-});
+// app.get("/loginForm", (req: Request, res: Response) => {
+//   authController.renderLogin(req, res);
+// });
 app.post("/login", (req, res) => {
     authController.login(req, res);
 });
@@ -127,6 +127,18 @@ app.post("/delete/comment/:id", (req, res) => {
 });
 app.get("/cart", (req, res) => {
     itemsController.bascet(req, res);
+});
+app.get("/addGenres", (req, res) => {
+    itemsController.addGenre(req, res);
+});
+app.post("/addGenres", (req, res) => {
+    itemsController.createGenre(req, res);
+});
+app.get("/addCategories", (req, res) => {
+    itemsController.addCategories(req, res);
+});
+app.post("/addCategories", (req, res) => {
+    itemsController.createCategories(req, res);
 });
 app.get("/description", (req, res) => {
     itemsController.renderDes(req, res);
