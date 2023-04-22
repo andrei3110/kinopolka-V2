@@ -28,7 +28,7 @@ model items {
   status       String?    @db.VarChar(255)
   video        String?    @db.Text
   treller      String?    @db.Text
-  items items__genres[]
+
 }
 
 model users {
@@ -38,8 +38,6 @@ model users {
   status   String? @db.VarChar(255)
 }
 model items__genres {
-   items  items     @relation(fields: [item__id], references: [id])
-   genres   genres     @relation(fields: [genres__id], references: [id])
   item__id        Int @db.Int
   genres__id      Int @db.Int
 
@@ -77,7 +75,7 @@ model genres {
   id       Int     @id @default(autoincrement())
   name     String? @db.VarChar(255)
   image    String? @db.VarChar(255)
-  genres items__genres[]
+
 }
 
 model filters {

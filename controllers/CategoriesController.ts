@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { items, users, bascet, genres, years, comments, filters, filtersBar, categories, cartoonGenres, country, PrismaClient } from '@prisma/client';
+import { items, users, bascet,items__genres, genres, years, comments, filters, filtersBar, categories, cartoonGenres, country, PrismaClient } from '@prisma/client';
 import { validateHeaderValue } from 'http';
 // import "./authorizationcontroller"
 const prisma: PrismaClient = new PrismaClient();
@@ -38,85 +38,83 @@ export class CategoriesController {
         });
     }
     async movies(req: Request, res: Response) {
-        const { name } = req.params;
+        const { id } = req.params;
 
         const genres = await prisma.genres.findMany({
-            where: {
-                name,
-            }
         });
         const categories = await prisma.categories.findMany({
         });
 
-        const count = await prisma.items.count({
-            where: {
-                genre: {
-                    contains: name
-                },
-                type: Number(req.session.category)
-            }
-        });
-        if (count > 0) {
-            let n = Math.ceil(count / 4)
-            req.session.count = Math.ceil(count / 4)
+        // const count = await prisma.items.findMany({
+        //     where: {
+        //         genre: {
+        //             contains: name
+        //         },
+        //         type: Number(req.session.category)
+        //     }
+        // });
+        // // if (count > 0) {
+        //     let n = Math.ceil(count / 4)
+        //     req.session.count = Math.ceil(count / 4)
 
 
-            let itemsPerPage = 4
+        //     let itemsPerPage = 4
 
-            let page = Number(req.query.page)
-            if (!page) page = 1;
-            if (page > n) page = n;
-            let pages = itemsPerPage * (page - 1)
-            const items = await prisma.items.findMany({
-                skip: pages,
-                take: itemsPerPage,
-                where: {
-                    genre: {
-                        contains: name
-                    },
-                    type: Number(req.session.category)
+        //     let page = Number(req.query.page)
+        //     if (!page) page = 1;
+        //     if (page > n) page = n;
+        //     let pages = itemsPerPage * (page - 1)
+        //     const items = await prisma.items.findMany({
+        //         skip: pages,
+        //         take: itemsPerPage,
+        //         where: {
+        //             genre: {
+        //                 contains: name
+        //             },
+        //             type: Number(req.session.category)
 
-                }
+        //         }
 
-            });
+        //     });
 
-            let k = 0;
-            for (let i = 0; i < items.length; i++) {
-                k = k + 1
-            }
-            const filters = await prisma.filters.findMany({})
-            res.render('types/movies', {
-                auth: req.session.auth,
-                active: req.session.active,
-                status: req.session.status,
-                admin: req.session.admin,
-                dark__light: req.session.dark__light,
-                category: req.session.category,
-                count: req.session.count,
-                'categories': categories,
-                'items': items,
-                'filters': filters,
-                'genres': genres,
+        //     let k = 0;
+        //     for (let i = 0; i < items.length; i++) {
+        //         k = k + 1
+        //     }
+        //     const filters = await prisma.filters.findMany({})
+        //     res.render('types/movies', {
+        //         auth: req.session.auth,
+        //         active: req.session.active,
+        //         status: req.session.status,
+        //         admin: req.session.admin,
+        //         dark__light: req.session.dark__light,
+        //         category: req.session.category,
+        //         count: req.session.count,
+        //         'categories': categories,
+        //         'items': items,
+        //         'filters': filters,
+        //         'genres': genres,
+        //     })
+        // } else {
+      
+            const items__genres = await prisma.items__genres.findMany({
+               where:{
+                genres__id:Number(id)  
+               }
             })
-        } else {
-            const categories = await prisma.categories.findMany({})
+            
             const items = await prisma.items.findMany({
-                where: {
-                    genre: {
-                        contains: name
-                    },
-                    type: Number(req.session.category)
-
-                }
-
-            });
+                
+            })
+   
+           
             const filters = await prisma.filters.findMany({})
             res.render('types/movies', {
                 auth: req.session.auth,
                 active: req.session.active,
                 status: req.session.status,
                 admin: req.session.admin,
-                dark__light: req.session.dark__light,
+                
                 category: req.session.category,
                 count: req.session.count,
                 'categories': categories,
@@ -124,7 +122,7 @@ export class CategoriesController {
                 'items': items,
                 'genres': genres,
             });
-        }
+        // }
 
     }
     async cartoons(req: Request, res: Response) {

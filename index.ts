@@ -71,7 +71,7 @@ app.get("/forfree/:id", (req: Request, res: Response) => {
 });
 
 //FILTERS//
-app.get("/from/movies/:name", (req: Request, res: Response) => {
+app.get("/from/movies/:id", (req: Request, res: Response) => {
   categoriesController.movies(req, res);
 });
 app.get("/from/country/:name", (req: Request, res: Response) => {
@@ -86,7 +86,7 @@ app.get("/types/free", (req: Request, res: Response) => {
 app.get("/types/subscribe", (req: Request, res: Response) => {
   categoriesController.subscribe(req, res);
 });
-app.get("/from/cartoons/:name", (req: Request, res: Response) => {
+app.get("/from/cartoons/:id", (req: Request, res: Response) => {
   categoriesController.cartoons(req, res);
 });
 app.get("/movies", (req: Request, res: Response) => {
