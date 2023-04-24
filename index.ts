@@ -104,9 +104,9 @@ app.post("/register", (req: Request, res: Response) => {
 app.get("/logout", (req: Request, res: Response) => {
   authController.logout(req, res);
 });
-app.get("/login", (req: Request, res: Response) => {
-  authController.renderLogin(req, res);
-});
+// app.get("/login", (req: Request, res: Response) => {
+//   authController.renderLogin(req, res);
+// });
 app.get("/registration", (req: Request, res: Response) => {
   authController.renderRegistration(req, res);
 });
@@ -145,6 +145,9 @@ app.get("/home", (req: Request, res: Response) => {
 });
 app.get("/bascet__btn", (req: Request, res: Response) => {
   itemsController.bascet(req, res);
+});
+app.get("/profile", (req: Request, res: Response) => {
+  itemsController.profile(req, res);
 });
 app.get("/users", (req: Request, res: Response) => {
   itemsController.users(req, res);

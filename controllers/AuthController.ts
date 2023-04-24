@@ -72,6 +72,7 @@ export class AuthController {
         });
         if (users[0] != undefined) {
             req.session.name = name
+            req.session.password = password
             if (req.session.name == "Admin") {
                 req.session.auth = true;
                 req.session.admin = true
@@ -96,12 +97,12 @@ export class AuthController {
                 res.redirect('/home');
             } else {
                 req.session.auth = false;
-                res.redirect('/render/login')
+                res.redirect('/enter')
                 req.session.name = undefined
             }
         } else {
             req.session.auth = false;
-            res.redirect('/render/login')
+            res.redirect('/enter')
             req.session.name = undefined
         };
     }
@@ -110,7 +111,7 @@ export class AuthController {
         addLog(` ${req.session.name} вышел из аккаунта`)
         req.session.auth = undefined
         req.session.name = undefined
-        res.redirect('/render/login')
+        res.redirect('/enter')
 
     }
 

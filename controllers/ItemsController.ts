@@ -120,19 +120,27 @@ export class ItemsController {
                 country: country,
                 age: age,
                 year: Number(year),
+                genre:'fff',
                 status : status,
                 video:video,
-                treller:treller
+                treller:treller,
             }
         });
-        for(let i = 0; i < one.length; i ++){
-            const items__genres = await prisma.items__genres.create({
-                    data:{
-                        item__id:Number(items.id),
-                        genres__id:Number(one[i])
-                    }
-                })
+        console.log(one)
+       for(let i = 0; i < one.length;i++){
+        let genres = await prisma.genres.findMany({
+            where:{
+                id:Number(one[i])
             }
+        })
+        await prisma.items__genres.create({
+            data:{
+                itemId:items.id,
+                genreId:genres[0].id
+            }
+        })
+        // console.log(genres[0].id)
+       }
         req.session.status = status;
 
         res.redirect('items/create')
@@ -433,6 +441,18 @@ export class ItemsController {
         })
 
         res.redirect('/');
+    }
+    async profile(req: Request, res: Response) {
+        const items = await prisma.items.findMany({})
+        const categories = await prisma.categories.findMany({})
+        res.render('account/profile',{
+            'items':items,
+            'categories':categories,
+            name:req.session.name,
+            auth:req.session.auth,
+            password:req.session.password,
+            admin:req.session.admin
+        });
     }
 }
 

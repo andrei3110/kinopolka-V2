@@ -129,18 +129,26 @@ class ItemsController {
                     country: country,
                     age: age,
                     year: Number(year),
+                    genre: 'fff',
                     status: status,
                     video: video,
-                    treller: treller
+                    treller: treller,
                 }
             });
+            console.log(one);
             for (let i = 0; i < one.length; i++) {
-                const items__genres = yield prisma.items__genres.create({
-                    data: {
-                        item__id: Number(items.id),
-                        genres__id: Number(one[i])
+                let genres = yield prisma.genres.findMany({
+                    where: {
+                        id: Number(one[i])
                     }
                 });
+                yield prisma.items__genres.create({
+                    data: {
+                        itemId: items.id,
+                        genreId: genres[0].id
+                    }
+                });
+                // console.log(genres[0].id)
             }
             req.session.status = status;
             res.redirect('items/create');
@@ -429,6 +437,20 @@ class ItemsController {
                 }
             });
             res.redirect('/');
+        });
+    }
+    profile(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const items = yield prisma.items.findMany({});
+            const categories = yield prisma.categories.findMany({});
+            res.render('account/profile', {
+                'items': items,
+                'categories': categories,
+                name: req.session.name,
+                auth: req.session.auth,
+                password: req.session.password,
+                admin: req.session.admin
+            });
         });
     }
 }

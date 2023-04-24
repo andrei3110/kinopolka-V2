@@ -28,7 +28,21 @@ model items {
   status       String?    @db.VarChar(255)
   video        String?    @db.Text
   treller      String?    @db.Text
+  Genres        items__genres[]
+}
+model genres {
+  id       Int     @id @default(autoincrement())
+  name     String
+  Items   items__genres[]
+}
 
+model items__genres {
+  relItem       items    @relation(fields:[itemId], references: [id])
+  itemId        Int
+  relGenre      genres @relation(fields:[genreId], references: [id])
+  genreId       Int
+
+  @@id([itemId, genreId])
 }
 
 model users {
@@ -36,12 +50,6 @@ model users {
   name     String? @db.VarChar(255)
   password String? @db.VarChar(255)
   status   String? @db.VarChar(255)
-}
-model items__genres {
-  item__id        Int @db.Int
-  genres__id      Int @db.Int
-
-  @@id([genres__id, item__id])
 }
 model rating {
   id       Int     @id @default(autoincrement())
@@ -71,12 +79,7 @@ model categories {
   name    String? @db.VarChar(255)
 }
 
-model genres {
-  id       Int     @id @default(autoincrement())
-  name     String? @db.VarChar(255)
-  image    String? @db.VarChar(255)
 
-}
 
 model filters {
   id       Int     @id @default(autoincrement())

@@ -79,63 +79,63 @@ async function genres() {
         data: [
             { 
                 name: "боевик" ,
-                image:"bovik.png"
+               
             },
             {
                 name: "комедии",
-                image:"comedy.png"
+         
             },
             { 
                 name: "романтика",
-                image:"romantic.png"
+               
             },
             { 
                 name: "драма",
-                image:"drama.png"
+              
             },
             { 
                 name: "мелодрама",
-                image:"melodrama.png"
+             
             },
             {
                 name: "триллер",
-                image:"triller.png"
+               
             },
             {
                 name: "исторический",
-                image:"history.png"
+               
             },
             {  
                 name: "трагедия",
-                image:"drama.png"
+             
             },
             {
                 name: "фантастика",
-                image:"fantasy.png"
+             
                 },
             { 
                 name: "приключения",
-                image:"adventure.png"
+            
             },
             { 
                 name: "семейный",
-                image:"move.png"
+               
             },
             { 
                 name: "детский",
-                image:"voina.png"
+           
             },
             {
                  name: "детектив",
-                image:"detective.png"
+          
             },
             { 
                 name: "мистика",
-                image:"horror.png"
+            
             },
             {
                  name: "криминал",
-                 image:"triller.png"
+             
             },    
         ],
         skipDuplicates: true
@@ -147,47 +147,46 @@ async function cartoonGenres() {
         data: [
             { 
                 name: "боевик",
-                image:"bovik.png"
+            
             },
             { 
                 name: "романтика",
-                image:"romantic.png"
+               
             },
             { 
                 name: "исторический",
-                image:"history.png"
+              
             },
             { 
                 name: "фантастика",
-                image:"fantasy.png"
+             
             },
             {
                  name: "приключения",
-                 image:"adventure.png"
+            
             },
             { 
                 name: "семейный",
-                image:"move.png"
+           
             },
             {
                  name: "детектив",
-                 image:"detective.png"
             },
             {
                  name: "мистика",
-                 image:"horror.png"
+             
             },
             {
                  name: "военный мультфильм",
-                 image:"voina.png"
+           
             },  
             {
                  name: "развлекательный",
-                 image:"fantasy.png"
+        
             },   
             {
                  name: "учебный",
-                 image:"super.png"
+             
             },   
         ],
         skipDuplicates: true
