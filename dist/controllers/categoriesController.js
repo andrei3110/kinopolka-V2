@@ -68,14 +68,14 @@ class CategoriesController {
                 arr.push(genres[0].Items[i].relItem.id);
             }
             for (let i = 0; i < arr.length; i++) {
-                console.log(arr[i]);
             }
             //    const items = await prisma.items.findMany({})
             const items = yield prisma.items.findMany({
                 where: {
                     id: {
-                        in: arr
-                    }
+                        in: arr,
+                    },
+                    type: Number(req.session.category)
                 }
             });
             const categories = yield prisma.categories.findMany({});

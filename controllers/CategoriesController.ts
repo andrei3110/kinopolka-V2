@@ -65,19 +65,21 @@ export class CategoriesController {
         
        }
        for (let i = 0; i < arr.length;i++){
-        console.log(arr[i])
+      
        }
     //    const items = await prisma.items.findMany({})
     const items  = await prisma.items.findMany({
         where:{
             id:{
-                in: arr
-            }
+                in: arr,
+                
+            },
+            type:Number(req.session.category)
         }
        })
-       
        const categories = await prisma.categories.findMany({});
        const filters = await prisma.filters.findMany({})
+       
        res.render('types/movies', {
            auth: req.session.auth,
            active: req.session.active,
@@ -139,7 +141,7 @@ export class CategoriesController {
             let k = 0;
             for (let i = 0; i < items.length; i++) {
                 k = k + 1
-            }
+            } 
             const categories = await prisma.categories.findMany({})
             res.render('types/movies', {
                 auth: req.session.auth,

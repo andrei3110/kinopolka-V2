@@ -137,10 +137,11 @@ export class ItemsController {
             data:{
                 itemId:items.id,
                 genreId:genres[0].id
+
             }
         })
-        // console.log(genres[0].id)
        }
+          
         req.session.status = status;
 
         res.redirect('items/create')

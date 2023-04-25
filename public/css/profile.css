@@ -1,0 +1,62 @@
+.profile {
+    height: 29em;
+    padding: 10px;
+    border: 2px solid gray;
+    border-radius: 10px;
+    background: gray;
+    color: white;
+    text-align: center;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url(/img/collage.jpg);
+}
+
+.profile_uptext {
+    font-size: 20px;
+}
+
+.profile_upint {
+    font-size: 40px;
+}
+
+.profile__info {
+    font-family: Century Gothic, arial, sans-serif;
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.profile__role {
+    font-family: Century Gothic, arial, sans-serif;
+}
+
+.profile__inter {
+    font-family: Century Gothic, arial, sans-serif;
+}
+
+.edit__data {
+    background-color: rgb(255, 16, 16);
+    color: white;
+    padding: 8px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 8px 0px rgba(248, 24, 24, 0.867);
+    transition: 0.4s;
+}
+
+.edit__data:hover {
+    box-shadow: 0px 5px 15px 0px rgba(179, 170, 170, 0.867);
+    transition: 0.4s;
+
+}
+
+.profile__img {
+    width: 170px;
+    height: 170px;
+    border: 3px solid gray;
+    box-shadow: 0 0 7px #666;
+    box-shadow: 0px 5px 10px 0px rgba(152, 152, 152, 0.699);
+    border-radius: 50%;
+
+}
+
+.profile__inter {
+    display: inline-block;
+    margin: 20px;
+}
