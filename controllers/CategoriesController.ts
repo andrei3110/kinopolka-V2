@@ -43,35 +43,56 @@ export class CategoriesController {
                 id:Number(id)
             },
             select:{
-                name:true,
                 Items:{
-                    select:{
-                        relGenre:{
+                    
+                    
+                     select:{
+                        relItem:{
                             select:{
-                                name:true
+                                id:true
                             }
                         }
                     }
                 }
-            }
+               },
+                
         })
-       console.log(genres)
-       const items = await prisma.items.findMany({})
-        const categories = await prisma.categories.findMany({});
-            const filters = await prisma.filters.findMany({})
-            res.render('types/movies', {
-                auth: req.session.auth,
-                active: req.session.active,
-                status: req.session.status,
-                admin: req.session.admin,
-                dark__light: req.session.dark__light,
-                category: req.session.category,
-                count: req.session.count,
-                'categories': categories,
-                'items': items,
-                'filters': filters,
-                'genres': genres,
-            })
+        // console.log(genres[0].Items)
+        let arr = []
+       for (let i = 0; i <genres[0].Items.length; i ++){
+      
+        arr.push(genres[0].Items[i].relItem.id)
+
+        
+       }
+       for (let i = 0; i < arr.length;i++){
+        console.log(arr[i])
+       }
+    //    const items = await prisma.items.findMany({})
+    const items  = await prisma.items.findMany({
+        where:{
+            id:{
+                in: arr
+            }
+        }
+       })
+       
+       const categories = await prisma.categories.findMany({});
+       const filters = await prisma.filters.findMany({})
+       res.render('types/movies', {
+           auth: req.session.auth,
+           active: req.session.active,
+           status: req.session.status,
+           admin: req.session.admin,
+           dark__light: req.session.dark__light,
+           category: req.session.category,
+           count: req.session.count,
+           'categories': categories,
+           'items':items,
+           'filters': filters,
+           'genres': genres,
+       })
+      
         }
 
     

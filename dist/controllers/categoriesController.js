@@ -51,20 +51,33 @@ class CategoriesController {
                     id: Number(id)
                 },
                 select: {
-                    name: true,
                     Items: {
                         select: {
-                            relGenre: {
+                            relItem: {
                                 select: {
-                                    name: true
+                                    id: true
                                 }
                             }
                         }
                     }
+                },
+            });
+            // console.log(genres[0].Items)
+            let arr = [];
+            for (let i = 0; i < genres[0].Items.length; i++) {
+                arr.push(genres[0].Items[i].relItem.id);
+            }
+            for (let i = 0; i < arr.length; i++) {
+                console.log(arr[i]);
+            }
+            //    const items = await prisma.items.findMany({})
+            const items = yield prisma.items.findMany({
+                where: {
+                    id: {
+                        in: arr
+                    }
                 }
             });
-            console.log(genres);
-            const items = yield prisma.items.findMany({});
             const categories = yield prisma.categories.findMany({});
             const filters = yield prisma.filters.findMany({});
             res.render('types/movies', {

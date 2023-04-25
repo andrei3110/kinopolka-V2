@@ -120,7 +120,7 @@ export class SubscribeController {
             const categories = await prisma.categories.findMany({})
             req.session.subscription = undefined;
             res.render('auth/login', {
-                'categories':categories
+                'categories':categories,
                 auth: req.session.auth,
                 active: req.session.active,
                 subscription: req.session.subscription,
