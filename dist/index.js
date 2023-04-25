@@ -170,6 +170,6 @@ app.post("/home", (req, res) => {
 app.post("/delete__movies/:id", (req, res) => {
     itemsController.delete__moves(req, res);
 });
-app.post("/search/byGenre", (req, res) => {
-    categoriesController.searchFilms(req, res);
+app.post("/search/byGenre/:id", (req, res) => {
+    categoriesController.movies(req, res);
 });

@@ -5,7 +5,7 @@
     <div class="genres__tags">
         <div class="genres__tags__wrapper">
             <% for (let i=0; i < genres.length; i++) { %>
-            <form class="tags__form" action="/search/byGenre" method="post">
+            <form class="tags__form" action="/search/byGenre/<%= genres[i].id %>" method="post">
                 <input type="submit" class="tags__item" name="name" value="<%= genres[i].name %>">
             </form>
             <% } %>

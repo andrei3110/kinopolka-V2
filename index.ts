@@ -201,8 +201,8 @@ app.post("/delete__movies/:id", (req: Request, res: Response) => {
   itemsController.delete__moves(req, res);
 });
 
-app.post("/search/byGenre", (req: Request, res: Response) => {
-  categoriesController.searchFilms(req, res);
+app.post("/search/byGenre/:id", (req: Request, res: Response) => {
+  categoriesController.movies(req, res);
 });
 
 
