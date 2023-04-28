@@ -136,6 +136,7 @@ class CategoriesController {
                     k = k + 1;
                 }
                 const categories = yield prisma.categories.findMany({});
+                const filters = yield prisma.filters.findMany({});
                 res.render('types/movies', {
                     auth: req.session.auth,
                     status: req.session.status,
@@ -147,6 +148,7 @@ class CategoriesController {
                     'items': items,
                     'cartoonGenres': genres,
                     'categories': categories,
+                    'filters': filters
                 });
             }
             else {

@@ -28,6 +28,7 @@ model items {
   status       String?    @db.VarChar(255)
   video        String?    @db.Text
   treller      String?    @db.Text
+
   Genres        items__genres[]
 }
 model genres {
@@ -50,6 +51,7 @@ model users {
   name     String? @db.VarChar(255)
   password String? @db.VarChar(255)
   status   String? @db.VarChar(255)
+  type     String  @db.VarChar(5)
 }
 model rating {
   id       Int     @id @default(autoincrement())
@@ -64,7 +66,7 @@ model comments {
   text       String? @db.VarChar(255)
 }
 
-model bascet {
+model basket {
   id       Int     @id @default(autoincrement())
   name     String? @db.VarChar(255)
   Username String? @db.VarChar(255)
@@ -117,4 +119,6 @@ model years {
 model country {
   id       Int     @id @default(autoincrement())
   name     String? @db.VarChar(255)
+  
+  
 }

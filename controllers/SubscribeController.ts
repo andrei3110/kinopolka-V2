@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { items, users, bascet, comments,categories, PrismaClient } from '@prisma/client';
+import { items, users, basket, comments,categories, PrismaClient } from '@prisma/client';
 import { validateHeaderValue } from 'http';
 import { addLog } from '../logs/addLog';
 // import "./authorizationcontroller"

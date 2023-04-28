@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { items, users, bascet,items__genres, comments,categories, PrismaClient } from '@prisma/client';
+import { items, users, basket,items__genres, comments,categories, PrismaClient } from '@prisma/client';
 import { validateHeaderValue } from 'http';
 // import "./authorizationcontroller"
 const prisma: PrismaClient = new PrismaClient();
@@ -47,13 +47,14 @@ export class ItemsController {
                 status:'подписка'
             }
         })
+
         const genres = await prisma.genres.findMany({})
         const categories = await prisma.categories.findMany({})
             res.render('home', {
                 'categories':categories,
                 'genres':genres,
                 'items':items,
-             
+
                 auth: req.session.auth,
                 searchMove: req.session.searchMove,
                 admin: req.session.admin,
@@ -61,7 +62,7 @@ export class ItemsController {
                 dark__light: req.session.dark__light,
             });
     }
-    
+
     async homeSearch(req: Request, res: Response) {
         const { name } = req.body;
         const items = await prisma.items.findMany({
@@ -104,12 +105,19 @@ export class ItemsController {
             one = req.body.check
            
         }
-        
-         
+        let arr = []
+        for(let i = 0; i < one.length;i++){
+            let genres = await prisma.genres.findMany({
+                where:{
+                    id:Number(one[i])
+                }
+            })
+            arr.push(genres[0].name)
+           }  
         const items = await prisma.items.create({
             data: {
                 name: name,
-                image: image,
+                image:String(req.file?.originalname) ,
                 description: description,
                 producer: producer,
                 actor: actor,
@@ -120,13 +128,13 @@ export class ItemsController {
                 country: country,
                 age: age,
                 year: Number(year),
-                genre:'fff',
+                genre:String(arr),
                 status : status,
                 video:video,
                 treller:treller,
             }
         });
-        console.log(one)
+
        for(let i = 0; i < one.length;i++){
         let genres = await prisma.genres.findMany({
             where:{
@@ -147,9 +155,9 @@ export class ItemsController {
         res.redirect('items/create')
     }
 
-    async bascet(req: Request, res: Response) {
+    async basket(req: Request, res: Response) {
         const { name, image, country, age, genre } = req.body;
-        const bascet = await prisma.bascet.findMany({
+        const basket = await prisma.basket.findMany({
             where: {
                 name: name,
                 image: image,
@@ -168,7 +176,7 @@ export class ItemsController {
             category: req.session.category,
             dark__light: req.session.dark__light,
             'categories':categories,
-            'bascet': bascet
+            'basket': basket
         });
     }
     async users(req: Request, res: Response) {
@@ -315,7 +323,7 @@ export class ItemsController {
             }
         });
 
-        await prisma.bascet.create({
+        await prisma.basket.create({
             data: {
                 name: name,
                 image: image,
@@ -325,17 +333,17 @@ export class ItemsController {
                 Username:String(req.session.name)
             }
         });
-        res.redirect('/bascet');
+        res.redirect('/basket');
     }
 
     async delete__Video(req: Request, res: Response) {
         const { id } = req.params;
-        const bascet = await prisma.bascet.delete({
+        const basket = await prisma.basket.delete({
             where: {
                 id: Number(id)
             }
         });
-        res.redirect('/bascet');
+        res.redirect('/basket');
     }
     async delete__users(req: Request, res: Response) {
         const { id } = req.params;
@@ -445,10 +453,46 @@ export class ItemsController {
     }
     async profile(req: Request, res: Response) {
         const items = await prisma.items.findMany({})
+        const basket = await prisma.basket.findMany({
+            where:{
+                Username:String(req.session.name)
+            }
+        })
+        let k = 0
+        for(let i = 0; i < basket.length; i ++){
+            k= k + 1
+        }
+        const comments = await prisma.comments.findMany({
+            where:{
+                user__name:String(req.session.name)
+            }
+        })
+
+        let m = 0
+        for(let i = 0; i < comments.length; i ++){
+            m= m + 1
+        }
+        const users = await prisma.users.findMany({
+            where:{
+                name:String(req.session.name)
+            }
+        })
+        let type = ''
+      
+        if(users[0].type == 'Admin'){
+             type = 'Администратор'
+        }else{
+            type = 'Пользователь'
+        }
         const categories = await prisma.categories.findMany({})
         res.render('account/profile',{
             'items':items,
             'categories':categories,
+            'basket':basket,
+            'users':users,
+            'BasketCount':k,
+            'commentsCount':m,
+            'type':type,
             name:req.session.name,
             auth:req.session.auth,
             password:req.session.password,

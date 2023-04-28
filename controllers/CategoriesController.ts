@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { items, users, bascet,items__genres, genres, years, comments, filters, filtersBar, categories, cartoonGenres, country, PrismaClient } from '@prisma/client';
+import { items, users, basket,items__genres, genres, years, comments, filters, filtersBar, categories, cartoonGenres, country, PrismaClient } from '@prisma/client';
 import { validateHeaderValue } from 'http';
 // import "./authorizationcontroller"
 const prisma: PrismaClient = new PrismaClient();
@@ -143,6 +143,7 @@ export class CategoriesController {
                 k = k + 1
             } 
             const categories = await prisma.categories.findMany({})
+            const filters = await prisma.filters.findMany({})
             res.render('types/movies', {
                 auth: req.session.auth,
                 status: req.session.status,
@@ -154,6 +155,7 @@ export class CategoriesController {
                 'items': items,
                 'cartoonGenres': genres,
                 'categories': categories,
+                'filters':filters
             });
         } else {
             const items = await prisma.items.findMany({

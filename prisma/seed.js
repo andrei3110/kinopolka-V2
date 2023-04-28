@@ -241,6 +241,21 @@ async function country() {
         }
     );
 }
+async function users() {
+    const users = await prisma.users.createMany({
+        data: [
+            { 
+                name: "Admin" ,
+                password: '311007',
+                status:'подписка',
+                type:"Admin"
+
+            },  
+        ],
+        skipDuplicates: true
+        }
+    );
+}
 async function filtersBar() {
     const filtersBar = await prisma.filtersBar.createMany({
         data: [
@@ -289,6 +304,7 @@ country()
 category()
 genres()
 cartoonGenres()
+users()
 years() 
 
     .then(async () => {

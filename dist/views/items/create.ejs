@@ -4,7 +4,7 @@
 <div class="content">
     <a href="/addGenres">жанры</a>
     <a href="/addCategories">Категории</a>
-    <form action="/AddItems" method="post">
+    <form action="/AddItems" enctype="multipart/form-data" method="post">
 
         <div class="create__genre">
             <% for (let i=0; i < genres.length; i++) { %>
@@ -30,13 +30,14 @@
 
             <input class="create__item--items" name="country" placeholder="страна" required>
             <input class="create__item--items" name="name" placeholder="имя" required>
-            <input class="create__item--items" name="image" type="file" placeholder="файл" required>
+           
         </div>
         <div class="create__item__block2">
             <input class="create__item--items" name="year" placeholder="год" required>
             <input class="create__item--items" name="status" placeholder="статус" required>
             <input class="create__item--items" name="video" placeholder="видео" required>
             <input class="create__item--items" name="treller" placeholder="треллер" required>
+            <input type="file" name="file" accept="image/png, image/jpeg">
         </div>
         <div class="cerate__description">
             <input class="cerate__description--items" name="actor" placeholder="актеры" required>
@@ -47,6 +48,7 @@
         </div>
         <input class="btn AddBtn" type="submit" value="опубликовать">
     </form>
+    
 
 </div>
 

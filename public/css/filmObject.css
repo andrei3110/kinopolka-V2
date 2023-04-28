@@ -100,7 +100,7 @@
     top: 8px;
     left: 10px;
   }
-  .save__InBascet{
+  .save__InBasket{
     font-family:Century Gothic,arial,sans-serif;
     padding:5px;
     margin-right: 10px;
@@ -109,12 +109,12 @@
     border:none;
     float:right;
   }
-  .save__InBascet:hover{
+  .save__InBasket:hover{
     transition: all 0.6s;
     background-color: #d5d5d5;
   }
 
-  .save__InBascet--text{
+  .save__InBasket--text{
     position: relative;
     bottom:6px;
   }
@@ -133,7 +133,7 @@ right:10px;
 border:none;
 background-color: rgb(215, 120, 47);
 }
-.delete__moves__bascet{
+.delete__moves__basket{
   padding-top:5px;
   padding-bottom:2px;
   padding-left:5px;

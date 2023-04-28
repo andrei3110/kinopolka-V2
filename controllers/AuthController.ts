@@ -23,29 +23,26 @@ export class AuthController {
             res.redirect('/render/registration')
             req.session.auth = false;
         } else {
-            await prisma.users.create({
+            const users = await prisma.users.create({
                 data: {
                     name: name,
                     password: password,
-                    status: 'Free'
+                    status: 'Free',
+                    type:'User'
                 }
             });
+           
             req.session.subscription = 'Free'
             req.session.name = name;
             req.session.password = password;
-            if (req.session.name == "Admin") {
+            req.session.auth = true
+            if (users.type == "Admin") {
                 req.session.admin = true
             } else {
                 req.session.admin = false
-            }
-            if (req.session.name != "") {
-                req.session.auth = true;
-                addLog(` ${req.session.name} зарегистрировал аккаунт`)
-                res.redirect('/home');
-            } else {
-                res.redirect('/render/registration')
-                req.session.auth = false;
-            }
+            }    
+            addLog(` ${req.session.name} зарегистрировал аккаунт`)
+            res.redirect('/home');
         }
     }
 
@@ -73,7 +70,7 @@ export class AuthController {
         if (users[0] != undefined) {
             req.session.name = name
             req.session.password = password
-            if (req.session.name == "Admin") {
+            if (users[0].type == "Admin") {
                 req.session.auth = true;
                 req.session.admin = true
 

@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import path from 'path';
+import multer from 'multer';
 import session from 'express-session';
 import { ItemsController } from './controllers/ItemsController';
 import { RatingController } from './controllers/RatingController';
@@ -125,9 +126,7 @@ app.get("/enter", (req: Request, res: Response) => {
 app.get("/items/create", (req: Request, res: Response) => {
   itemsController.Add(req, res);
 });
-app.post("/AddItems", (req: Request, res: Response) => {
-  itemsController.AddItems(req, res);
-});
+
 app.post("/arrange", (req: Request, res: Response) => {
   subscribeController.arrange(req, res);
 });
@@ -143,8 +142,8 @@ app.get("/subscribe", (req: Request, res: Response) => {
 app.get("/home", (req: Request, res: Response) => {
   itemsController.home(req, res);
 });
-app.get("/bascet__btn", (req: Request, res: Response) => {
-  itemsController.bascet(req, res);
+app.get("/basket__btn", (req: Request, res: Response) => {
+  itemsController.basket(req, res);
 });
 app.get("/profile", (req: Request, res: Response) => {
   itemsController.profile(req, res);
@@ -159,7 +158,7 @@ app.post("/delete/comment/:id", (req: Request, res: Response) => {
   commentsController.delete__comment(req, res);
 });
 app.get("/cart", (req: Request, res: Response) => {
-  itemsController.bascet(req, res);
+  itemsController.basket(req, res);
 });
 app.get("/addGenres", (req: Request, res: Response) => {
   itemsController.addGenre(req, res);
@@ -180,13 +179,13 @@ app.post("/save__Video", (req: Request, res: Response) => {
   itemsController.save__Video(req, res);
 });
 app.get("/save__Video", (req: Request, res: Response) => {
-  itemsController.bascet(req, res);
+  itemsController.basket(req, res);
 });
 app.post("/delete__Video/:id", (req: Request, res: Response) => {
   itemsController.delete__Video(req, res);
 });
-app.get("/bascet", (req: Request, res: Response) => {
-  itemsController.bascet(req, res);
+app.get("/basket", (req: Request, res: Response) => {
+  itemsController.basket(req, res);
 });
 app.get("/des__film/:id", (req: Request, res: Response) => {
   itemsController.description(req, res);
@@ -205,4 +204,20 @@ app.post("/search/byGenre/:id", (req: Request, res: Response) => {
   categoriesController.movies(req, res);
 });
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/img");
+  },
+  filename: function (req, file, cb) {
+    console.log(file);
+    cb(null, file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+app.post("/AddItems", upload.single("file"), (req:Request, res:Response) => {
+  // res.send("File uploaded successfully");
+  itemsController.AddItems(req, res);
+});
 

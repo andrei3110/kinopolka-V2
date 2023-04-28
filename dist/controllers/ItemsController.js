@@ -106,6 +106,7 @@ class ItemsController {
         });
     }
     AddItems(req, res) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const { id, name, image, description, producer, actor, screenwriter, operator, regicer, year, age, country, status, video, treller } = req.body;
             let genres = yield prisma.genres.findMany({});
@@ -115,10 +116,19 @@ class ItemsController {
             for (let i = 0; i < genres.length; i++) {
                 one = req.body.check;
             }
+            let arr = [];
+            for (let i = 0; i < one.length; i++) {
+                let genres = yield prisma.genres.findMany({
+                    where: {
+                        id: Number(one[i])
+                    }
+                });
+                arr.push(genres[0].name);
+            }
             const items = yield prisma.items.create({
                 data: {
                     name: name,
-                    image: image,
+                    image: String((_a = req.file) === null || _a === void 0 ? void 0 : _a.originalname),
                     description: description,
                     producer: producer,
                     actor: actor,
@@ -129,13 +139,12 @@ class ItemsController {
                     country: country,
                     age: age,
                     year: Number(year),
-                    genre: 'fff',
+                    genre: String(arr),
                     status: status,
                     video: video,
                     treller: treller,
                 }
             });
-            console.log(one);
             for (let i = 0; i < one.length; i++) {
                 let genres = yield prisma.genres.findMany({
                     where: {
@@ -153,10 +162,10 @@ class ItemsController {
             res.redirect('items/create');
         });
     }
-    bascet(req, res) {
+    basket(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { name, image, country, age, genre } = req.body;
-            const bascet = yield prisma.bascet.findMany({
+            const basket = yield prisma.basket.findMany({
                 where: {
                     name: name,
                     image: image,
@@ -175,7 +184,7 @@ class ItemsController {
                 category: req.session.category,
                 dark__light: req.session.dark__light,
                 'categories': categories,
-                'bascet': bascet
+                'basket': basket
             });
         });
     }
@@ -303,7 +312,7 @@ class ItemsController {
                     genre: genre
                 }
             });
-            yield prisma.bascet.create({
+            yield prisma.basket.create({
                 data: {
                     name: name,
                     image: image,
@@ -313,18 +322,18 @@ class ItemsController {
                     Username: String(req.session.name)
                 }
             });
-            res.redirect('/bascet');
+            res.redirect('/basket');
         });
     }
     delete__Video(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const bascet = yield prisma.bascet.delete({
+            const basket = yield prisma.basket.delete({
                 where: {
                     id: Number(id)
                 }
             });
-            res.redirect('/bascet');
+            res.redirect('/basket');
         });
     }
     delete__users(req, res) {
@@ -441,10 +450,45 @@ class ItemsController {
     profile(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const items = yield prisma.items.findMany({});
+            const basket = yield prisma.basket.findMany({
+                where: {
+                    Username: String(req.session.name)
+                }
+            });
+            let k = 0;
+            for (let i = 0; i < basket.length; i++) {
+                k = k + 1;
+            }
+            const comments = yield prisma.comments.findMany({
+                where: {
+                    user__name: String(req.session.name)
+                }
+            });
+            let m = 0;
+            for (let i = 0; i < comments.length; i++) {
+                m = m + 1;
+            }
+            const users = yield prisma.users.findMany({
+                where: {
+                    name: String(req.session.name)
+                }
+            });
+            let type = '';
+            if (users[0].type == 'Admin') {
+                type = 'Администратор';
+            }
+            else {
+                type = 'Пользователь';
+            }
             const categories = yield prisma.categories.findMany({});
             res.render('account/profile', {
                 'items': items,
                 'categories': categories,
+                'basket': basket,
+                'users': users,
+                'BasketCount': k,
+                'commentsCount': m,
+                'type': type,
                 name: req.session.name,
                 auth: req.session.auth,
                 password: req.session.password,

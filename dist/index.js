@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
+const multer_1 = __importDefault(require("multer"));
 const express_session_1 = __importDefault(require("express-session"));
 const ItemsController_1 = require("./controllers/ItemsController");
 const RatingController_1 = require("./controllers/RatingController");
@@ -95,9 +96,6 @@ app.get("/enter", (req, res) => {
 app.get("/items/create", (req, res) => {
     itemsController.Add(req, res);
 });
-app.post("/AddItems", (req, res) => {
-    itemsController.AddItems(req, res);
-});
 app.post("/arrange", (req, res) => {
     subscribeController.arrange(req, res);
 });
@@ -113,8 +111,8 @@ app.get("/subscribe", (req, res) => {
 app.get("/home", (req, res) => {
     itemsController.home(req, res);
 });
-app.get("/bascet__btn", (req, res) => {
-    itemsController.bascet(req, res);
+app.get("/basket__btn", (req, res) => {
+    itemsController.basket(req, res);
 });
 app.get("/profile", (req, res) => {
     itemsController.profile(req, res);
@@ -129,7 +127,7 @@ app.post("/delete/comment/:id", (req, res) => {
     commentsController.delete__comment(req, res);
 });
 app.get("/cart", (req, res) => {
-    itemsController.bascet(req, res);
+    itemsController.basket(req, res);
 });
 app.get("/addGenres", (req, res) => {
     itemsController.addGenre(req, res);
@@ -150,13 +148,13 @@ app.post("/save__Video", (req, res) => {
     itemsController.save__Video(req, res);
 });
 app.get("/save__Video", (req, res) => {
-    itemsController.bascet(req, res);
+    itemsController.basket(req, res);
 });
 app.post("/delete__Video/:id", (req, res) => {
     itemsController.delete__Video(req, res);
 });
-app.get("/bascet", (req, res) => {
-    itemsController.bascet(req, res);
+app.get("/basket", (req, res) => {
+    itemsController.basket(req, res);
 });
 app.get("/des__film/:id", (req, res) => {
     itemsController.description(req, res);
@@ -172,4 +170,18 @@ app.post("/delete__movies/:id", (req, res) => {
 });
 app.post("/search/byGenre/:id", (req, res) => {
     categoriesController.movies(req, res);
+});
+const storage = multer_1.default.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, "public/img");
+    },
+    filename: function (req, file, cb) {
+        console.log(file);
+        cb(null, file.originalname);
+    },
+});
+const upload = (0, multer_1.default)({ storage: storage });
+app.post("/AddItems", upload.single("file"), (req, res) => {
+    // res.send("File uploaded successfully");
+    itemsController.AddItems(req, res);
 });
