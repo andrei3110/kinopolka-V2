@@ -248,6 +248,7 @@ async function users() {
                 name: "Admin" ,
                 password: '311007',
                 status:'подписка',
+                avatar:'Alto.png',
                 type:"Admin"
 
             },  

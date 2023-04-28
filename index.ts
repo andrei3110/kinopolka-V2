@@ -122,7 +122,9 @@ app.get("/enter", (req: Request, res: Response) => {
 });
 
 
-
+app.get("/editProfile", (req: Request, res: Response) => {
+  itemsController.editProfile(req, res);
+});
 app.get("/items/create", (req: Request, res: Response) => {
   itemsController.Add(req, res);
 });
@@ -216,8 +218,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+app.post("/editAvatar", upload.single("avatar"), (req:Request, res:Response) => {
+  itemsController.editAvatar(req, res);
+});  
 app.post("/AddItems", upload.single("file"), (req:Request, res:Response) => {
-  // res.send("File uploaded successfully");
   itemsController.AddItems(req, res);
-});
+});  
 

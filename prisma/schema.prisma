@@ -51,6 +51,7 @@ model users {
   name     String? @db.VarChar(255)
   password String? @db.VarChar(255)
   status   String? @db.VarChar(255)
+  avatar   String? @db.VarChar(255)
   type     String  @db.VarChar(5)
 }
 model rating {

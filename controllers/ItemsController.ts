@@ -6,26 +6,6 @@ const prisma: PrismaClient = new PrismaClient();
 
 export class ItemsController {
 
-    async dark(req: Request, res: Response) {
-        req.session.dark__light = false
-        res.render('home', {
-            auth: req.session.auth,
-            admin: req.session.admin,
-            status: req.session.status,
-            dark__light: req.session.dark__light,
-            searchMove:req.session.searchMove,
-        });
-    }
-    async light(req: Request, res: Response) {
-        req.session.dark__light = true
-        res.render('home', {
-            auth: req.session.auth,
-            admin: req.session.admin,
-            status: req.session.status,
-            dark__light: req.session.dark__light,
-            searchMove:req.session.searchMove,
-        });
-    }
     async destroy(req: Request, res: Response) {
         const { id } = req.body;
 
@@ -50,10 +30,13 @@ export class ItemsController {
 
         const genres = await prisma.genres.findMany({})
         const categories = await prisma.categories.findMany({})
+        const users = await prisma.users.findMany({})
+        console.log(users[0])
             res.render('home', {
-                'categories':categories,
+                'categories':categories,    
                 'genres':genres,
                 'items':items,
+                'users':users,
 
                 auth: req.session.auth,
                 searchMove: req.session.searchMove,
@@ -310,6 +293,45 @@ export class ItemsController {
             mark: req.session.mark
         });
     }
+    async editProfile(req: Request, res: Response) {
+         const items = await prisma.items.findMany({})
+        const categories = await prisma.categories.findMany({})
+        res.render('account/editdata', {
+            'items':items,
+            'categories':categories,
+            auth: req.session.auth,
+            status: req.session.status,
+            admin: req.session.admin,
+            dark__light: req.session.dark__light,
+            mark: req.session.mark
+        });
+    }
+
+    async editAvatar(req: Request, res: Response) {
+        const {avatar} = req.body
+        const users = await prisma.users.findMany({
+            where:{
+                name:String(req.session.name)
+            }
+        })
+        await prisma.users.update({
+            where:{
+                id:Number(users[0].id)
+            },
+            data:{
+                avatar:String(req.file?.originalname)
+            }
+        })
+       res.render('account/editdata', {
+           'users':users,
+          
+           auth: req.session.auth,
+           status: req.session.status,
+           admin: req.session.admin,
+           dark__light: req.session.dark__light,
+           mark: req.session.mark
+       });
+   }
 
     async save__Video(req: Request, res: Response) {
         const { name, image, country, age, genre,Username} = req.body;
@@ -478,7 +500,6 @@ export class ItemsController {
             }
         })
         let type = ''
-      
         if(users[0].type == 'Admin'){
              type = 'Администратор'
         }else{

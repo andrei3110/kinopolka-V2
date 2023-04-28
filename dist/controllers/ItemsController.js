@@ -14,30 +14,6 @@ const client_1 = require("@prisma/client");
 // import "./authorizationcontroller"
 const prisma = new client_1.PrismaClient();
 class ItemsController {
-    dark(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            req.session.dark__light = false;
-            res.render('home', {
-                auth: req.session.auth,
-                admin: req.session.admin,
-                status: req.session.status,
-                dark__light: req.session.dark__light,
-                searchMove: req.session.searchMove,
-            });
-        });
-    }
-    light(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            req.session.dark__light = true;
-            res.render('home', {
-                auth: req.session.auth,
-                admin: req.session.admin,
-                status: req.session.status,
-                dark__light: req.session.dark__light,
-                searchMove: req.session.searchMove,
-            });
-        });
-    }
     destroy(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.body;
@@ -60,10 +36,13 @@ class ItemsController {
             });
             const genres = yield prisma.genres.findMany({});
             const categories = yield prisma.categories.findMany({});
+            const users = yield prisma.users.findMany({});
+            console.log(users[0]);
             res.render('home', {
                 'categories': categories,
                 'genres': genres,
                 'items': items,
+                'users': users,
                 auth: req.session.auth,
                 searchMove: req.session.searchMove,
                 admin: req.session.admin,
@@ -292,6 +271,48 @@ class ItemsController {
                 }
             });
             res.render('description', {
+                auth: req.session.auth,
+                status: req.session.status,
+                admin: req.session.admin,
+                dark__light: req.session.dark__light,
+                mark: req.session.mark
+            });
+        });
+    }
+    editProfile(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const items = yield prisma.items.findMany({});
+            const categories = yield prisma.categories.findMany({});
+            res.render('account/editdata', {
+                'items': items,
+                'categories': categories,
+                auth: req.session.auth,
+                status: req.session.status,
+                admin: req.session.admin,
+                dark__light: req.session.dark__light,
+                mark: req.session.mark
+            });
+        });
+    }
+    editAvatar(req, res) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function* () {
+            const { avatar } = req.body;
+            const users = yield prisma.users.findMany({
+                where: {
+                    name: String(req.session.name)
+                }
+            });
+            yield prisma.users.update({
+                where: {
+                    id: Number(users[0].id)
+                },
+                data: {
+                    avatar: String((_a = req.file) === null || _a === void 0 ? void 0 : _a.originalname)
+                }
+            });
+            res.render('account/editdata', {
+                'users': users,
                 auth: req.session.auth,
                 status: req.session.status,
                 admin: req.session.admin,

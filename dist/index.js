@@ -93,6 +93,9 @@ app.post("/login", (req, res) => {
 app.get("/enter", (req, res) => {
     authController.renderLogin(req, res);
 });
+app.get("/editProfile", (req, res) => {
+    itemsController.editProfile(req, res);
+});
 app.get("/items/create", (req, res) => {
     itemsController.Add(req, res);
 });
@@ -181,7 +184,9 @@ const storage = multer_1.default.diskStorage({
     },
 });
 const upload = (0, multer_1.default)({ storage: storage });
+app.post("/editAvatar", upload.single("avatar"), (req, res) => {
+    itemsController.editAvatar(req, res);
+});
 app.post("/AddItems", upload.single("file"), (req, res) => {
-    // res.send("File uploaded successfully");
     itemsController.AddItems(req, res);
 });
