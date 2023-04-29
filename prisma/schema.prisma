@@ -25,7 +25,7 @@ model items {
   screenwriter String?    @db.VarChar(255)
   regicer      String?    @db.VarChar(255)
   actor        String?    @db.VarChar(255)
-  status       String?    @db.VarChar(255)
+  status       String?    @db.VarChar(255)  
   video        String?    @db.Text
   treller      String?    @db.Text
 

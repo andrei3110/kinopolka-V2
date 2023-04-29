@@ -14,10 +14,11 @@
   </form>
 
   <form action="/editName" method="post" >
+    <input type="hidden" value="<%= users.id %>">
     <input type='text' name="currentName">
     <input type='text' name="lastName">
     <input type="submit" value="Изменить">
   </form>
-
+ 
 </div>
 <%- include('../particles/footer.ejs') %>

@@ -29,14 +29,16 @@ declare module "express-session" {
     admin: boolean,
     searchMove:boolean,
     username: string,
+    userId: Number,
     category: Number,
     mark: boolean,
     name: String,
+    alert: String,
     password:String,
     nameMove:String,
     filter:Boolean,
     checkId:String,
-    dark__light:boolean,
+    UserType:String,
     deleteComment:boolean,
     test:Number,
     count:Number,
@@ -204,6 +206,12 @@ app.post("/delete__movies/:id", (req: Request, res: Response) => {
 
 app.post("/search/byGenre/:id", (req: Request, res: Response) => {
   categoriesController.movies(req, res);
+});
+app.post("/editPassword", (req: Request, res: Response) => {
+  itemsController.editPassword(req, res);
+});
+app.post("/editName", (req: Request, res: Response) => {
+  itemsController.editName(req, res);
 });
 
 const storage = multer.diskStorage({

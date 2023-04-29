@@ -36,8 +36,14 @@ class ItemsController {
             });
             const genres = yield prisma.genres.findMany({});
             const categories = yield prisma.categories.findMany({});
-            const users = yield prisma.users.findMany({});
-            console.log(users[0]);
+            const users = yield prisma.users.findMany({
+                where: {
+                    name: String(req.session.name)
+                }
+            });
+            if (users[0] != undefined) {
+                console.log(users[0].type);
+            }
             res.render('home', {
                 'categories': categories,
                 'genres': genres,
@@ -47,7 +53,6 @@ class ItemsController {
                 searchMove: req.session.searchMove,
                 admin: req.session.admin,
                 status: req.session.status,
-                dark__light: req.session.dark__light,
             });
         });
     }
@@ -62,7 +67,6 @@ class ItemsController {
             res.render('home', {
                 auth: req.session.auth,
                 admin: req.session.admin,
-                dark__light: req.session.dark__light,
                 'items': items
             });
         });
@@ -79,7 +83,6 @@ class ItemsController {
                 auth: req.session.auth,
                 admin: req.session.admin,
                 status: req.session.status,
-                dark__light: req.session.dark__light,
                 category: req.session.category,
             });
         });
@@ -161,7 +164,6 @@ class ItemsController {
                 admin: req.session.admin,
                 status: req.session.status,
                 category: req.session.category,
-                dark__light: req.session.dark__light,
                 'categories': categories,
                 'basket': basket
             });
@@ -183,7 +185,6 @@ class ItemsController {
                 status: req.session.status,
                 admin: req.session.admin,
                 category: req.session.category,
-                dark__light: req.session.dark__light,
                 'categories': categories,
                 'users': users
             });
@@ -257,7 +258,6 @@ class ItemsController {
                 password: req.session.password,
                 status: req.session.status,
                 admin: req.session.admin,
-                dark__light: req.session.dark__light,
                 mark: req.session.mark,
             });
         });
@@ -274,22 +274,25 @@ class ItemsController {
                 auth: req.session.auth,
                 status: req.session.status,
                 admin: req.session.admin,
-                dark__light: req.session.dark__light,
                 mark: req.session.mark
             });
         });
     }
     editProfile(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const items = yield prisma.items.findMany({});
+            const users = yield prisma.users.findMany({
+                where: {
+                    id: Number(req.session.userId)
+                }
+            });
             const categories = yield prisma.categories.findMany({});
             res.render('account/editdata', {
-                'items': items,
                 'categories': categories,
+                users: users,
                 auth: req.session.auth,
                 status: req.session.status,
                 admin: req.session.admin,
-                dark__light: req.session.dark__light,
+                alert: req.session.alert,
                 mark: req.session.mark
             });
         });
@@ -300,7 +303,7 @@ class ItemsController {
             const { avatar } = req.body;
             const users = yield prisma.users.findMany({
                 where: {
-                    name: String(req.session.name)
+                    id: Number(req.session.userId)
                 }
             });
             yield prisma.users.update({
@@ -311,14 +314,68 @@ class ItemsController {
                     avatar: String((_a = req.file) === null || _a === void 0 ? void 0 : _a.originalname)
                 }
             });
-            res.render('account/editdata', {
-                'users': users,
-                auth: req.session.auth,
-                status: req.session.status,
-                admin: req.session.admin,
-                dark__light: req.session.dark__light,
-                mark: req.session.mark
+            const categories = yield prisma.categories.findMany({});
+            res.redirect('/profile');
+        });
+    }
+    editPassword(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { currentPassword, lastPassword } = req.body;
+            const users = yield prisma.users.findMany({
+                where: {
+                    id: Number(req.session.userId)
+                }
             });
+            if (currentPassword == req.session.password) {
+                yield prisma.users.update({
+                    where: {
+                        id: Number(users[0].id)
+                    },
+                    data: {
+                        password: lastPassword
+                    }
+                });
+                req.session.password = lastPassword;
+                res.redirect('/profile');
+            }
+            else {
+                res.redirect('/editProfile');
+            }
+            const categories = yield prisma.categories.findMany({});
+        });
+    }
+    editName(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { currentName, lastName } = req.body;
+            const users = yield prisma.users.findMany({
+                where: {
+                    id: Number(req.session.userId)
+                }
+            });
+            if (currentName == req.session.name) {
+                yield prisma.users.update({
+                    where: {
+                        id: Number(users[0].id)
+                    },
+                    data: {
+                        name: lastName
+                    }
+                });
+                const data = yield prisma.users.findMany({
+                    where: {
+                        name: lastName
+                    }
+                });
+                req.session.name = lastName;
+                if (data[0] == undefined) {
+                    req.session.alert = undefined;
+                    res.redirect('/editProfile');
+                }
+                else {
+                    res.redirect('/profile');
+                }
+            }
+            const categories = yield prisma.categories.findMany({});
         });
     }
     save__Video(req, res) {
@@ -395,7 +452,6 @@ class ItemsController {
                 admin: req.session.admin,
                 active: req.session.active,
                 status: req.session.status,
-                dark__light: req.session.dark__light,
                 mark: req.session.mark
             });
         });
@@ -421,7 +477,6 @@ class ItemsController {
                 status: req.session.status,
                 admin: req.session.admin,
                 category: req.session.category,
-                dark__light: req.session.dark__light,
                 'categories': categories,
             });
         });
@@ -435,7 +490,6 @@ class ItemsController {
                 status: req.session.status,
                 admin: req.session.admin,
                 category: req.session.category,
-                dark__light: req.session.dark__light,
                 'categories': categories,
             });
         });
@@ -470,6 +524,13 @@ class ItemsController {
     }
     profile(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            const users = yield prisma.users.findMany({
+                where: {
+                    id: Number(req.session.userId)
+                }
+            });
+            console.log("ffffffffffffff");
+            console.log(users);
             const items = yield prisma.items.findMany({});
             const basket = yield prisma.basket.findMany({
                 where: {
@@ -489,17 +550,14 @@ class ItemsController {
             for (let i = 0; i < comments.length; i++) {
                 m = m + 1;
             }
-            const users = yield prisma.users.findMany({
-                where: {
-                    name: String(req.session.name)
-                }
-            });
             let type = '';
-            if (users[0].type == 'Admin') {
-                type = 'Администратор';
-            }
-            else {
-                type = 'Пользователь';
+            if (users[0] != undefined) {
+                if (users[0].type == 'Admin') {
+                    req.session.UserType = 'Администратор';
+                }
+                else {
+                    req.session.UserType = 'Пользователь';
+                }
             }
             const categories = yield prisma.categories.findMany({});
             res.render('account/profile', {
@@ -511,6 +569,7 @@ class ItemsController {
                 'commentsCount': m,
                 'type': type,
                 name: req.session.name,
+                UserType: req.session.UserType,
                 auth: req.session.auth,
                 password: req.session.password,
                 admin: req.session.admin

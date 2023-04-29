@@ -174,6 +174,12 @@ app.post("/delete__movies/:id", (req, res) => {
 app.post("/search/byGenre/:id", (req, res) => {
     categoriesController.movies(req, res);
 });
+app.post("/editPassword", (req, res) => {
+    itemsController.editPassword(req, res);
+});
+app.post("/editName", (req, res) => {
+    itemsController.editName(req, res);
+});
 const storage = multer_1.default.diskStorage({
     destination: function (req, file, cb) {
         cb(null, "public/img");

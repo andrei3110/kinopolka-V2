@@ -38,13 +38,16 @@ class AuthController {
                         name: name,
                         password: password,
                         status: 'Free',
-                        type: 'User'
+                        type: 'User',
+                        avatar: 'default_avatar.jpg'
                     }
                 });
                 req.session.subscription = 'Free';
                 req.session.name = name;
+                req.session.userId = users.id;
                 req.session.password = password;
                 req.session.auth = true;
+                console.log(req.session.userId);
                 if (users.type == "Admin") {
                     req.session.admin = true;
                 }
@@ -65,7 +68,6 @@ class AuthController {
                 auth: req.session.auth,
                 password: req.session.password,
                 admin: req.session.admin,
-                dark__light: req.session.dark__light,
             });
         });
     }
@@ -80,6 +82,7 @@ class AuthController {
             });
             if (users[0] != undefined) {
                 req.session.name = name;
+                req.session.userId = users[0].id;
                 req.session.password = password;
                 if (users[0].type == "Admin") {
                     req.session.auth = true;
@@ -134,7 +137,6 @@ class AuthController {
                 auth: req.session.auth,
                 password: req.session.password,
                 admin: req.session.admin,
-                dark__light: req.session.dark__light,
             });
         });
     }
