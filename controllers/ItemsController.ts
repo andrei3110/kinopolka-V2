@@ -310,6 +310,40 @@ export class ItemsController {
             mark: req.session.mark
         });
     }
+    async editProfileName(req: Request, res: Response) {
+        const users = await prisma.users.findMany({
+            where:{
+                id:Number(req.session.userId)
+            }
+        })
+        const categories = await prisma.categories.findMany({})
+        res.render('account/editName', {
+            'categories': categories,
+            users: users,
+            auth: req.session.auth,
+            status: req.session.status,
+            admin: req.session.admin,
+            alert: req.session.alert,
+            mark: req.session.mark
+        });
+    }
+    async editProfileAvatar(req: Request, res: Response) {
+        const users = await prisma.users.findMany({
+            where:{
+                id:Number(req.session.userId)
+            }
+        })
+        const categories = await prisma.categories.findMany({})
+        res.render('account/editAvatar', {
+            'categories': categories,
+            users: users,
+            auth: req.session.auth,
+            status: req.session.status,
+            admin: req.session.admin,
+            alert: req.session.alert,
+            mark: req.session.mark
+        });
+    }
 
     async editAvatar(req: Request, res: Response) {
         const { avatar } = req.body

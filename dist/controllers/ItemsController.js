@@ -297,6 +297,44 @@ class ItemsController {
             });
         });
     }
+    editProfileName(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const users = yield prisma.users.findMany({
+                where: {
+                    id: Number(req.session.userId)
+                }
+            });
+            const categories = yield prisma.categories.findMany({});
+            res.render('account/editName', {
+                'categories': categories,
+                users: users,
+                auth: req.session.auth,
+                status: req.session.status,
+                admin: req.session.admin,
+                alert: req.session.alert,
+                mark: req.session.mark
+            });
+        });
+    }
+    editProfileAvatar(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const users = yield prisma.users.findMany({
+                where: {
+                    id: Number(req.session.userId)
+                }
+            });
+            const categories = yield prisma.categories.findMany({});
+            res.render('account/editAvatar', {
+                'categories': categories,
+                users: users,
+                auth: req.session.auth,
+                status: req.session.status,
+                admin: req.session.admin,
+                alert: req.session.alert,
+                mark: req.session.mark
+            });
+        });
+    }
     editAvatar(req, res) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {

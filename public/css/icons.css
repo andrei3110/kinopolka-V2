@@ -57,11 +57,14 @@
 }
 .chevron-left{
     width:30px;
-    height:80px;
+    height:50px;
+    color :rgb(0, 0, 0);
 }
 .chevron-right{
     width:30px;
-    height:80px;
+    height:50px;
+    
+    position:relative;font-weight: bold;
 }
 .video__slash{
     width:50px;

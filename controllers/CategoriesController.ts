@@ -150,7 +150,6 @@ export class CategoriesController {
                 admin: req.session.admin,
                 active: req.session.active,
                 count: req.session.count,
-                dark__light: req.session.dark__light,
                 category: req.session.category,
                 'items': items,
                 'cartoonGenres': genres,
@@ -169,16 +168,19 @@ export class CategoriesController {
 
             });
             const categories = await prisma.categories.findMany({})
+            const filters = await prisma.filters.findMany({})
+
+
             res.render('types/movies', {
                 auth: req.session.auth,
                 status: req.session.status,
                 admin: req.session.admin,
                 active: req.session.active,
                 count: req.session.count,
-                dark__light: req.session.dark__light,
                 category: req.session.category,
                 'items': items,
                 'cartoonGenres': genres,
+                'filters':filters,
                 'categories': categories,
             });
         }

@@ -1,6 +1,6 @@
 
-   */
-   .add{
+   
+   .btn__add{
     border:none;
     height: 40px;
     width: 100%;
@@ -9,6 +9,14 @@
     background-color: rgb(45, 45, 45);
    }
    .basket {
+    border:none;
+    height: 40px;
+    color:white;
+    width: 100%;
+    z-index: 7;
+    background-color: rgb(45, 45, 45);
+  }
+  .btn__profile{
     border:none;
     height: 40px;
     color:white;

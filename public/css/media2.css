@@ -79,6 +79,7 @@
 
   .icon {
     color: rgb(184, 184, 184);
+    margin-left:30%;
   }
 
   .vhod {
@@ -148,7 +149,27 @@
     left: 30%;
     font-family:Century Gothic,arial,sans-serif;
   }
+  
+  .reg {
+    width: none;
+    max-height: none;
+    background-color: #c8c8c8;
 
+    border-radius: 0;
+    box-shadow: 28px 42px 90px 28px rgba(56, 54, 54, 0.25), 0 10px 30px 0 rgba(42, 41, 50, 0.22);
+    padding: 0px;
+  }
+  .enter {
+    text-decoration: none;
+    color: white;
+    position: relative;
+    top: 45%;
+    /* display:none; */
+    left: 30%;
+    font-family:Century Gothic,arial,sans-serif;
+  }
+
+  /* /////////////////////////////////////// */
   .genres__image {
     position: relative;
     top: 10%;
@@ -522,20 +543,22 @@
   .slider__control{
     position: relative;
     border:none;
+    color:rgb(0, 0, 0);
+    mix-blend-mode: overlay;
+
     
   }
   .slider__control--l{
     float:left;
     position:relative;
     left:50px;
-    bottom:300px;
+    bottom:20px;
     
   }
   .slider__control--r{
     float:right;
     position: relative;
     right:50px;
-    bottom:300px;
   }
 
 }

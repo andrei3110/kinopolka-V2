@@ -127,6 +127,12 @@ app.get("/enter", (req: Request, res: Response) => {
 app.get("/editProfile", (req: Request, res: Response) => {
   itemsController.editProfile(req, res);
 });
+app.get("/editName", (req: Request, res: Response) => {
+  itemsController.editProfileName(req, res);
+});
+app.get("/editAvatar", (req: Request, res: Response) => {
+  itemsController.editProfileAvatar(req, res);
+});
 app.get("/items/create", (req: Request, res: Response) => {
   itemsController.Add(req, res);
 });
