@@ -265,6 +265,7 @@ export class ItemsController {
             auth: req.session.auth,
             password: req.session.password,
             status: req.session.status,
+            name: req.session.name,
             admin: req.session.admin,
             mark: req.session.mark,
 

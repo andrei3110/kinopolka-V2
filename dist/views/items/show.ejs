@@ -211,12 +211,14 @@
                     </div>
         
                     <% if (auth) { %>
+                        <% if (items.name == name || admin) { %>
                     <form action="/delete/comment/<%= comments[i].id %>" method="post">
                         <input type="hidden" name="commentId" value="<%= comments[i].id %>">
                         <input type="hidden" name="itemsID" value="<%= items.id %>">
                         <input type="hidden" name="commentName" value="<%= comments[i].userName %>">
                         <input class="deleteComment" type="submit" value="del">
                     </form>
+                    <% } %>
                     <% } %>
                 </div>
                 <% } %>

@@ -17,10 +17,10 @@ export class AuthController {
 
         if (users[0] != undefined) {
             req.session.auth = false;
-            res.redirect('/render/registration')
+            res.redirect('/register')
 
         } else if (users[0] == '') {
-            res.redirect('/render/registration')
+            res.redirect('/register')
             req.session.auth = false;
         } else {
             const users = await prisma.users.create({

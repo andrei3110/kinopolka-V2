@@ -26,7 +26,6 @@ class CommentsController {
             yield prisma.comments.deleteMany({
                 where: {
                     id: Number(commentId),
-                    user__name: String(req.session.name)
                 }
             });
             const comment = yield prisma.comments.findMany({
