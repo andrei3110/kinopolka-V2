@@ -85,7 +85,7 @@ export class CategoriesController {
            active: req.session.active,
            status: req.session.status,
            admin: req.session.admin,
-           dark__light: req.session.dark__light,
+     
            category: req.session.category,
            count: req.session.count,
            'categories': categories,

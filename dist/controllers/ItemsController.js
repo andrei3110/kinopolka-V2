@@ -498,13 +498,31 @@ class ItemsController {
     delete__moves(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const items = yield prisma.items.delete({
+            const items = yield prisma.items.findUnique({
                 where: {
                     id: Number(id)
                 }
             });
             const genres = yield prisma.genres.findMany({});
-            res.redirect("/movies");
+            // await prisma.items__genres.delete({
+            //     // items_genres: {
+            //     //     itemId: items.id,
+            //     //     genreId: genres[0].id
+            //     // }
+            // })
+            if (items != null) {
+                yield prisma.items__genres.deleteMany({
+                    where: {
+                        itemId: Number(items.id)
+                    }
+                });
+                yield prisma.items.delete({
+                    where: {
+                        id: Number(id)
+                    }
+                });
+            }
+            res.redirect(`/categories/${req.session.category}`);
         });
     }
     addGenre(req, res) {

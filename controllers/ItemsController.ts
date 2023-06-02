@@ -497,18 +497,40 @@ export class ItemsController {
         })
     }
 
+
     async delete__moves(req: Request, res: Response) {
         const { id } = req.params;
-        const items = await prisma.items.delete({
+        const items = await prisma.items.findUnique({
             where: {
                 id: Number(id)
             }
         });
         const genres = await prisma.genres.findMany({
-
         })
-        res.redirect("/movies")
+        // await prisma.items__genres.delete({
+        //     // items_genres: {
+        //     //     itemId: items.id,
+        //     //     genreId: genres[0].id
+
+        //     // }
+        // })
+        
+        if (items != null) { 
+            await prisma.items__genres.deleteMany({
+                where: {
+                    itemId: Number(items.id)
+            }})
+            await prisma.items.delete({
+                where:{
+                    id: Number(id)
+                }
+            })
+        }
+
+        res.redirect(`/categories/${req.session.category}`)
     }
+
+
     async addGenre(req: Request, res: Response) {
         const categories = await prisma.categories.findMany({})
 
