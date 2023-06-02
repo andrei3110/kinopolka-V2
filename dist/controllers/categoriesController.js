@@ -94,6 +94,63 @@ class CategoriesController {
             });
         });
     }
+    search(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            const genres = yield prisma.genres.findMany({
+                where: {
+                    id: Number(id)
+                },
+                select: {
+                    Items: {
+                        select: {
+                            relItem: {
+                                select: {
+                                    id: true
+                                }
+                            }
+                        }
+                    }
+                },
+            });
+            // console.log(genres[0].Items)
+            let arr = [];
+            for (let i = 0; i < genres[0].Items.length; i++) {
+                arr.push(genres[0].Items[i].relItem.id);
+            }
+            for (let i = 0; i < arr.length; i++) {
+            }
+            //    const items = await prisma.items.findMany({})
+            if (arr.length != 0) {
+                req.session.searchMove = true;
+            }
+            else {
+                req.session.searchMove = false;
+            }
+            const items = yield prisma.items.findMany({
+                where: {
+                    id: {
+                        in: arr,
+                    },
+                }
+            });
+            const categories = yield prisma.categories.findMany({});
+            const filters = yield prisma.filters.findMany({});
+            res.render('search', {
+                'categories': categories,
+                'items': items,
+                'filters': filters,
+                'genres': genres,
+                auth: req.session.auth,
+                active: req.session.active,
+                status: req.session.status,
+                admin: req.session.admin,
+                searchMove: req.session.searchMove,
+                category: req.session.category,
+                count: req.session.count,
+            });
+        });
+    }
     cartoons(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { name } = req.params;

@@ -178,7 +178,7 @@ app.post("/delete__movies/:id", (req, res) => {
     itemsController.delete__moves(req, res);
 });
 app.post("/search/byGenre/:id", (req, res) => {
-    categoriesController.movies(req, res);
+    categoriesController.search(req, res);
 });
 app.post("/editPassword", (req, res) => {
     itemsController.editPassword(req, res);
