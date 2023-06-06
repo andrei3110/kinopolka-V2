@@ -34,7 +34,17 @@
         </div>
         <div class="create__item__block2">
             <input class="create__item--items" name="year" placeholder="год" required>
-            <input class="create__item--items" name="status" placeholder="статус" required>
+
+            <div class="create__radio__items">
+                <input type="radio" class="radio" name="status" value="подписка">
+                <label class="radio__items">подписка</label>
+            </div>
+            <div class="create__radio__items">
+                <input type="radio" class="radio" name="status" value="бесплатно">
+                <label class="radio__items">бесплатно</label>
+            </div>
+
+   
             <input class="create__item--items" name="video" placeholder="видео" required>
             <input class="create__item--items" name="treller" placeholder="треллер" required>
             <input type="file" name="file" accept="image/png, image/jpeg">

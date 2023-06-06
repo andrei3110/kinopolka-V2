@@ -32,7 +32,6 @@ class CategoriesController {
                 active: req.session.active,
                 admin: req.session.admin,
                 status: req.session.status,
-                dark__light: req.session.dark__light,
                 category: req.session.category,
                 count: req.session.count,
                 'items': items,
@@ -261,7 +260,6 @@ class CategoriesController {
                 count: req.session.count,
                 active: req.session.active,
                 admin: req.session.admin,
-                dark__light: req.session.dark__light,
                 mark: req.session.mark
             });
         });
@@ -306,7 +304,6 @@ class CategoriesController {
                     admin: req.session.admin,
                     active: req.session.active,
                     count: req.session.count,
-                    dark__light: req.session.dark__light,
                     category: req.session.category,
                     'filters': filters,
                     'items': items,
@@ -328,7 +325,6 @@ class CategoriesController {
                     admin: req.session.admin,
                     active: req.session.active,
                     count: req.session.count,
-                    dark__light: req.session.dark__light,
                     category: req.session.category,
                     'items': items,
                     'filters': filters,
@@ -351,7 +347,6 @@ class CategoriesController {
                 status: req.session.status,
                 admin: req.session.admin,
                 active: req.session.active,
-                dark__light: req.session.dark__light,
                 category: req.session.category,
                 'categories': categories,
                 'genres': genres,
@@ -375,7 +370,6 @@ class CategoriesController {
                 active: req.session.active,
                 status: req.session.status,
                 admin: req.session.admin,
-                dark__light: req.session.dark__light,
                 category: req.session.category,
                 count: req.session.count,
                 'categories': categories,
@@ -398,7 +392,6 @@ class CategoriesController {
                 active: req.session.active,
                 status: req.session.status,
                 admin: req.session.admin,
-                dark__light: req.session.dark__light,
                 category: req.session.category,
                 count: req.session.count,
                 'categories': categories,
@@ -450,7 +443,6 @@ class CategoriesController {
                     admin: req.session.admin,
                     active: req.session.active,
                     count: req.session.count,
-                    dark__light: req.session.dark__light,
                     category: req.session.category,
                     'items': items,
                     'filters': filters,
@@ -475,7 +467,6 @@ class CategoriesController {
                     admin: req.session.admin,
                     active: req.session.active,
                     count: req.session.count,
-                    dark__light: req.session.dark__light,
                     category: req.session.category,
                     'items': items,
                     'filters': filters,
@@ -499,7 +490,6 @@ class CategoriesController {
                 active: req.session.active,
                 status: req.session.status,
                 admin: req.session.admin,
-                dark__light: req.session.dark__light,
                 category: req.session.category,
                 count: req.session.count,
                 'filters': filters,
@@ -522,7 +512,6 @@ class CategoriesController {
                 active: req.session.active,
                 status: req.session.status,
                 admin: req.session.admin,
-                dark__light: req.session.dark__light,
                 category: req.session.category,
                 count: req.session.count,
                 'filters': filters,
@@ -542,10 +531,8 @@ class CategoriesController {
             const categories = yield prisma.categories.findMany({});
             const filters = yield prisma.filters.findMany({});
             const genres = yield prisma.genres.findMany({});
-            const cartoonGenres = yield prisma.cartoonGenres.findMany({});
             const years = yield prisma.years.findMany({});
             const country = yield prisma.country.findMany({});
-            const items = yield prisma.filters.findMany({});
             if (filtersBar[0].name == 'free' || filtersBar[0].name == 'subscribe') {
                 res.redirect(`/types/${filtersBar[0].name}`);
             }
@@ -563,7 +550,6 @@ class CategoriesController {
                     admin: req.session.admin,
                     active: req.session.active,
                     count: req.session.count,
-                    dark__light: req.session.dark__light,
                     category: req.session.category,
                 });
             }
