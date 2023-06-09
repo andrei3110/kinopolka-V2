@@ -89,26 +89,11 @@ model filters {
   name     String? @db.VarChar(255)
   title    String? @db.VarChar(255)
 }
-model filtersBar {
-  id       Int     @id @default(autoincrement())
-  name     String? @db.VarChar(255)
-}
 
 model cartoonGenres {
   id       Int     @id @default(autoincrement())
   name     String? @db.VarChar(255)
   image    String? @db.VarChar(255)
-}
-
-model chat {
-  id       Int     @id @default(autoincrement())
-  text     String? @db.VarChar(255)
-}
-
-model support {
-  id       Int     @id @default(autoincrement())
-  name     String? @db.VarChar(255)
-  text     String? @db.VarChar(255)
 }
 
 model years {

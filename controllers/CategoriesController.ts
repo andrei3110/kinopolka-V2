@@ -97,13 +97,14 @@ export class CategoriesController {
     async search(req: Request, res: Response) {
         const { id } = req.params;
 
-        const genres = await prisma.genres.findMany({
+        const genre = await prisma.genres.findMany({
+
             where: {
                 id: Number(id)
             },
+
             select: {
                 Items: {
-
                     select: {
                         relItem: {
                             select: {
@@ -118,10 +119,9 @@ export class CategoriesController {
 
         // console.log(genres[0].Items)
         let arr = []
-        for (let i = 0; i < genres[0].Items.length; i++) {
+        for (let i = 0; i < genre[0].Items.length; i++) {
 
-            arr.push(genres[0].Items[i].relItem.id)
-
+            arr.push(genre[0].Items[i].relItem.id)
 
         }
         for (let i = 0; i < arr.length; i++) {
@@ -140,7 +140,7 @@ export class CategoriesController {
                 },
             }
         })
-
+        const genres = await prisma.genres.findMany({})
         const categories = await prisma.categories.findMany({});
         const filters = await prisma.filters.findMany({})
 
@@ -148,7 +148,8 @@ export class CategoriesController {
             'categories': categories,
             'items': items,
             'filters': filters,
-            'genres': genres,
+            'genre': genre,
+            'genres':genres,
             auth: req.session.auth,
             active: req.session.active,
             status: req.session.status,
@@ -156,7 +157,6 @@ export class CategoriesController {
             searchMove: req.session.searchMove,
             category: req.session.category,
             count: req.session.count,
-
         })
 
     }
@@ -570,28 +570,29 @@ export class CategoriesController {
     async filters(req: Request, res: Response) {
 
         const { id } = req.params;
-
-        const filtersBar = await prisma.filtersBar.findMany({
+        const filtersBar = await prisma.filters.findMany({
             where: {
                 id: Number(id),
             }
         })
 
         const categories = await prisma.categories.findMany({})
-        const filters = await prisma.filters.findMany({})
+        const filters= await prisma.filters.findMany({})
         const genres = await prisma.genres.findMany({})
+        const cartoonGenres = await prisma.cartoonGenres.findMany({})
         const years = await prisma.years.findMany({})
         const country = await prisma.country.findMany({})
 
-        if (filtersBar[0].name == 'free' || filtersBar[0].name == 'subscribe') {
-            res.redirect(`/types/${filtersBar[0].name}`)
+        if (filtersBar[0].title == 'free' || filtersBar[0].title == 'subscribe') {
+            res.redirect(`/types/${filtersBar[0].title}`)
         } else {
 
-            res.render(`types/${filtersBar[0].name}`, {
+            res.render(`types/${filtersBar[0].title}`, {
                 'categories': categories,
-                'filtersBar': filtersBar,
+                'filtersBar':filtersBar,
                 'years': years,
                 'filters': filters,
+                'cartoonGenres':cartoonGenres,
                 'genres': genres,
                 'country': country,
                 auth: req.session.auth,

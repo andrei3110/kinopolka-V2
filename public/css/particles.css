@@ -50,69 +50,77 @@ body {
   margin-top: 20px;
 
 }
+.footer__container{
+  position: relative;
+  text-align: center;
+  top:30px;
+}
+.footer__container__oblect{
+  position: relative;
+  text-align: center;
+  top:50px;
+}
 .footer__about{
   color:white;
-
+  padding-left:20px;
+  padding: 15px;
+  
   position: relative;
-  top:30px;
-  left:100px;
   display:inline-block;
   border-left: solid white 2px;
-  padding-left: 30px;
-  padding: 10px;
+
 }
 .footer__wrapper{
   display:block;
 }
 .footer__navigation{
   color:white;
-  top:30px;
  display:inline-block;
   position: relative;
-  left:450px;
   border-left: solid white 2px;
-  padding-left: 30px;
-  padding: 10px;
+  padding-left: 20px;
+  padding: 15px;
+  margin-left:300px;
 }
 .footer__account{
   color:white;
-  top:30px;
+  
  display:inline-block;
   position: relative;
-  left:750px;
   border-left: solid white 2px;
-  padding-left: 30px;
-  padding: 10px;
+  padding-left: 20px;
+  margin-left: 300px;
+  padding: 15px;
 }
 .footer__contacts{
   color:white;
   position: relative;
-  top:20px;
+  text-align: left;
   display:inline-block;
-  left: 100px;
+ 
+ 
 }
 .footer__logo{
   color:rgb(117, 117, 117);
   display:inline-block;
-  float:right;
   right:20px;
-  top:120px;
+  bottom: 0px;
   font-size: 20px;
-  position: relative;
+  position: absolute;
 }
 .footer__navigation-items{
   color:white;
   position: relative;
   display:inline-block;
-  top:50px;
-  left: 280px;
+  text-align: left;
+  margin-left: 150px;
 }
 .footer__account-items{
   color:white;
   position: relative;
   display:inline-block;
-  top:30px;
-  left: 580px;
+  text-align: left;
+  margin-left: 300px;
 }
 .content {
   max-width: 1536px;

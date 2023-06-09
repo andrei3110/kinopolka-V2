@@ -257,24 +257,7 @@ async function users() {
         }
     );
 }
-async function filtersBar() {
-    const filtersBar = await prisma.filtersBar.createMany({
-        data: [
-            { 
-                name: "genre"}, 
-            { 
-                name: "years"}, 
-            { 
-                name: "Country"}, 
-            { 
-                name: "subscribe"}, 
-            { 
-                name: "free"}
-        ],
-        skipDuplicates: true
-        }
-    );
-}
+
 async function filters() {
     const filters = await prisma.filters.createMany({
         data: [
@@ -299,7 +282,7 @@ async function filters() {
         }
     );
 }
-filtersBar()
+
 filters()
 country()
 category()
