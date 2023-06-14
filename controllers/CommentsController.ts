@@ -56,7 +56,16 @@ export class CommentsController {
         res.redirect(`/des__film/${itemsID}`);
     }
 
-    
+    async show(req: Request, res: Response) {
+        const {id} = req.params
+        const comments = await prisma.comments.findMany({
+            where:{
+                id:Number(id)
+            }
+        });
+
+        res.status(200).json(comments);
+    }    
 }
 
 

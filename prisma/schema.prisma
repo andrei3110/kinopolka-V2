@@ -82,6 +82,17 @@ model categories {
   name    String? @db.VarChar(255)
 }
 
+model country {
+  id      Int     @id @default(autoincrement())
+  name    String? @db.VarChar(255)
+}
+
+model years {
+  id      Int     @id @default(autoincrement())
+  name    String? @db.VarChar(255)
+  date    Int?    @db.Int
+}
+
 
 
 model filters {
@@ -90,21 +101,9 @@ model filters {
   title    String? @db.VarChar(255)
 }
 
+
 model cartoonGenres {
   id       Int     @id @default(autoincrement())
   name     String? @db.VarChar(255)
   image    String? @db.VarChar(255)
-}
-
-model years {
-  id       Int     @id @default(autoincrement())
-  name     String? @db.VarChar(255)
-  date     Int?    @db.Int
-}
-
-model country {
-  id       Int     @id @default(autoincrement())
-  name     String? @db.VarChar(255)
-  
-  
 }

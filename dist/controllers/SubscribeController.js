@@ -24,7 +24,6 @@ class SubscribeController {
                 active: req.session.active,
                 admin: req.session.admin,
                 status: req.session.status,
-                dark__light: req.session.dark__light,
                 category: req.session.category,
                 subscription: req.session.subscription,
                 'categories': categories
@@ -61,7 +60,6 @@ class SubscribeController {
                     active: req.session.active,
                     admin: req.session.admin,
                     status: req.session.status,
-                    dark__light: req.session.dark__light,
                     category: req.session.category,
                     subscription: req.session.subscription,
                 });
@@ -78,7 +76,6 @@ class SubscribeController {
                     subscription: req.session.subscription,
                     admin: req.session.admin,
                     status: req.session.status,
-                    dark__light: req.session.dark__light,
                     category: req.session.category,
                 });
             }
@@ -114,7 +111,6 @@ class SubscribeController {
                     active: req.session.active,
                     admin: req.session.admin,
                     status: req.session.status,
-                    dark__light: req.session.dark__light,
                     category: req.session.category,
                     subscription: req.session.subscription,
                 });
@@ -129,7 +125,6 @@ class SubscribeController {
                     subscription: req.session.subscription,
                     admin: req.session.admin,
                     status: req.session.status,
-                    dark__light: req.session.dark__light,
                     category: req.session.category,
                 });
             }
@@ -151,7 +146,6 @@ class SubscribeController {
                     subscription: req.session.subscription,
                     admin: req.session.admin,
                     status: req.session.status,
-                    dark__light: req.session.dark__light,
                     category: req.session.category,
                 });
             }
@@ -162,7 +156,6 @@ class SubscribeController {
                     subscription: req.session.subscription,
                     admin: req.session.admin,
                     status: req.session.status,
-                    dark__light: req.session.dark__light,
                     category: req.session.category,
                 });
             }
@@ -183,7 +176,6 @@ class SubscribeController {
                 subscription: req.session.subscription,
                 admin: req.session.admin,
                 status: req.session.status,
-                dark__light: req.session.dark__light,
                 category: req.session.category,
             });
         });

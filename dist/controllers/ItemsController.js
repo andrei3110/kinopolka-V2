@@ -42,7 +42,6 @@ class ItemsController {
                 }
             });
             if (users[0] != undefined) {
-                console.log(users[0].type);
             }
             res.render('home', {
                 'categories': categories,
@@ -141,7 +140,7 @@ class ItemsController {
                 });
             }
             req.session.status = status;
-            res.redirect('items/create');
+            res.status(200);
         });
     }
     basket(req, res) {
@@ -586,8 +585,6 @@ class ItemsController {
                     id: Number(req.session.userId)
                 }
             });
-            console.log("ffffffffffffff");
-            console.log(users);
             const items = yield prisma.items.findMany({});
             const basket = yield prisma.basket.findMany({
                 where: {

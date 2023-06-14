@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { items, users, basket, items__genres, genres, years, comments, filters, filtersBar, categories, cartoonGenres, country, PrismaClient } from '@prisma/client';
+import { items, users, basket, items__genres, genres, years, comments, filters, categories, cartoonGenres, country, PrismaClient } from '@prisma/client';
 import { validateHeaderValue } from 'http';
 // import "./authorizationcontroller"
 const prisma: PrismaClient = new PrismaClient();
@@ -54,7 +54,7 @@ export class CategoriesController {
             },
 
         })
-        // console.log(genres[0].Items)
+
         let arr = []
         for (let i = 0; i < genres[0].Items.length; i++) {
 
@@ -65,7 +65,6 @@ export class CategoriesController {
         for (let i = 0; i < arr.length; i++) {
 
         }
-        //    const items = await prisma.items.findMany({})
         const items = await prisma.items.findMany({
             where: {
                 id: {
@@ -117,7 +116,6 @@ export class CategoriesController {
 
         })
 
-        // console.log(genres[0].Items)
         let arr = []
         for (let i = 0; i < genre[0].Items.length; i++) {
 
@@ -501,7 +499,6 @@ export class CategoriesController {
 
             const categories = await prisma.categories.findMany({})
             const filters = await prisma.filters.findMany({})
-            const filtersBar = await prisma.filtersBar.findMany({})
 
             res.render('types/movies', {
                 auth: req.session.auth,
@@ -512,7 +509,7 @@ export class CategoriesController {
                 category: req.session.category,
                 'items': items,
                 'filters': filters,
-                'filtersBar': filtersBar,
+
                 'categories': categories
 
             });
@@ -527,6 +524,7 @@ export class CategoriesController {
                 status: 'подписка'
             }
         })
+        
         const filters = await prisma.filters.findMany({})
         const categories = await prisma.categories.findMany({})
         res.render('types/movies', {
@@ -580,8 +578,9 @@ export class CategoriesController {
         const filters= await prisma.filters.findMany({})
         const genres = await prisma.genres.findMany({})
         const cartoonGenres = await prisma.cartoonGenres.findMany({})
-        const years = await prisma.years.findMany({})
-        const country = await prisma.country.findMany({})
+        const items = await prisma.items.findMany()
+        const country = await prisma.country.findMany()
+        const years = await prisma.years.findMany()
 
         if (filtersBar[0].title == 'free' || filtersBar[0].title == 'subscribe') {
             res.redirect(`/types/${filtersBar[0].title}`)
@@ -590,11 +589,12 @@ export class CategoriesController {
             res.render(`types/${filtersBar[0].title}`, {
                 'categories': categories,
                 'filtersBar':filtersBar,
-                'years': years,
+                'items':items,
                 'filters': filters,
+                'country':country,
+                'years':years,
                 'cartoonGenres':cartoonGenres,
                 'genres': genres,
-                'country': country,
                 auth: req.session.auth,
                 filter: req.session.filter,
                 status: req.session.status,

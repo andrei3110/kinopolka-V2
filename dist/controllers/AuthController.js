@@ -47,7 +47,6 @@ class AuthController {
                 req.session.userId = users.id;
                 req.session.password = password;
                 req.session.auth = true;
-                console.log(req.session.userId);
                 if (users.type == "Admin") {
                     req.session.admin = true;
                 }

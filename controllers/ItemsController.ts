@@ -36,7 +36,6 @@ export class ItemsController {
             }
         })
         if(users[0] != undefined){
-            console.log(users[0].type)
         }
  
         res.render('home', {
@@ -139,7 +138,7 @@ export class ItemsController {
 
         req.session.status = status;
 
-        res.redirect('items/create')
+        res.status(200);
     }
 
     async basket(req: Request, res: Response) {
@@ -589,8 +588,7 @@ export class ItemsController {
                 id: Number(req.session.userId)
             }
         })
-        console.log("ffffffffffffff")
-        console.log(users)
+
         const items = await prisma.items.findMany({})
         const basket = await prisma.basket.findMany({
             where: {

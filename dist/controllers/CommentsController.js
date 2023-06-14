@@ -56,5 +56,16 @@ class CommentsController {
             res.redirect(`/des__film/${itemsID}`);
         });
     }
+    show(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = req.params;
+            const comments = yield prisma.comments.findMany({
+                where: {
+                    id: Number(id)
+                }
+            });
+            res.status(200).json(comments);
+        });
+    }
 }
 exports.CommentsController = CommentsController;

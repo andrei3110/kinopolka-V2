@@ -25,7 +25,6 @@ class NotificationController {
                 admin: req.session.admin,
                 searchMove: req.session.searchMove,
                 category: req.session.category,
-                dark__light: req.session.dark__light,
             });
         });
     }

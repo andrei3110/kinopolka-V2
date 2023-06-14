@@ -7,7 +7,6 @@ import { RatingController } from './controllers/RatingController';
 import { AuthController } from './controllers/AuthController';
 import { CommentsController } from './controllers/CommentsController';
 import { CategoriesController } from './controllers/CategoriesController';
-import { NotificationController } from './controllers/NotificationController';
 import { SubscribeController } from './controllers/SubscribeController';
 const app: Express = express();
 const itemsController = new ItemsController();
@@ -15,7 +14,6 @@ const ratingController = new RatingController();
 const authController = new AuthController();
 const commentsController = new CommentsController();
 const categoriesController = new CategoriesController();
-const notificationController = new NotificationController();
 const subscribeController = new SubscribeController();
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }))
@@ -33,13 +31,9 @@ declare module "express-session" {
     category: Number,
     mark: boolean,
     name: String,
-    alert: String,
     password:String,
-    nameMove:String,
     filter:Boolean,
-    checkId:String,
     UserType:String,
-    deleteComment:boolean,
     test:Number,
     count:Number,
     active: String,
@@ -113,6 +107,7 @@ app.get("/logout", (req: Request, res: Response) => {
 app.get("/registration", (req: Request, res: Response) => {
   authController.renderRegistration(req, res);
 });
+
 // app.get("/loginForm", (req: Request, res: Response) => {
 //   authController.renderLogin(req, res);
 // });
@@ -225,7 +220,6 @@ const storage = multer.diskStorage({
     cb(null, "public/img");
   },
   filename: function (req, file, cb) {
-    console.log(file);
     cb(null, file.originalname);
   },
 });
@@ -238,4 +232,8 @@ app.post("/editAvatar", upload.single("avatar"), (req:Request, res:Response) => 
 app.post("/AddItems", upload.single("file"), (req:Request, res:Response) => {
   itemsController.AddItems(req, res);
 });  
+
+app.get('/api/v1/comments/:id/show', (req:Request, res:Response) => {
+  commentsController.show(req, res);
+});
 

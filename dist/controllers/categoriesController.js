@@ -61,14 +61,12 @@ class CategoriesController {
                     }
                 },
             });
-            // console.log(genres[0].Items)
             let arr = [];
             for (let i = 0; i < genres[0].Items.length; i++) {
                 arr.push(genres[0].Items[i].relItem.id);
             }
             for (let i = 0; i < arr.length; i++) {
             }
-            //    const items = await prisma.items.findMany({})
             const items = yield prisma.items.findMany({
                 where: {
                     id: {
@@ -112,7 +110,6 @@ class CategoriesController {
                     }
                 },
             });
-            // console.log(genres[0].Items)
             let arr = [];
             for (let i = 0; i < genre[0].Items.length; i++) {
                 arr.push(genre[0].Items[i].relItem.id);
@@ -462,7 +459,6 @@ class CategoriesController {
                 });
                 const categories = yield prisma.categories.findMany({});
                 const filters = yield prisma.filters.findMany({});
-                const filtersBar = yield prisma.filtersBar.findMany({});
                 res.render('types/movies', {
                     auth: req.session.auth,
                     status: req.session.status,
@@ -472,7 +468,6 @@ class CategoriesController {
                     category: req.session.category,
                     'items': items,
                     'filters': filters,
-                    'filtersBar': filtersBar,
                     'categories': categories
                 });
             }
@@ -534,8 +529,9 @@ class CategoriesController {
             const filters = yield prisma.filters.findMany({});
             const genres = yield prisma.genres.findMany({});
             const cartoonGenres = yield prisma.cartoonGenres.findMany({});
-            const years = yield prisma.years.findMany({});
-            const country = yield prisma.country.findMany({});
+            const items = yield prisma.items.findMany();
+            const country = yield prisma.country.findMany();
+            const years = yield prisma.years.findMany();
             if (filtersBar[0].title == 'free' || filtersBar[0].title == 'subscribe') {
                 res.redirect(`/types/${filtersBar[0].title}`);
             }
@@ -543,11 +539,12 @@ class CategoriesController {
                 res.render(`types/${filtersBar[0].title}`, {
                     'categories': categories,
                     'filtersBar': filtersBar,
-                    'years': years,
+                    'items': items,
                     'filters': filters,
+                    'country': country,
+                    'years': years,
                     'cartoonGenres': cartoonGenres,
                     'genres': genres,
-                    'country': country,
                     auth: req.session.auth,
                     filter: req.session.filter,
                     status: req.session.status,
