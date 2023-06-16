@@ -14,48 +14,46 @@ const client_1 = require("@prisma/client");
 // import "./authorizationcontroller"
 const prisma = new client_1.PrismaClient();
 class CommentsController {
-    delete__comment(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            const { move__id, text, item__id, itemsID, user__name, nameId, commentId, ratingId } = req.body;
-            const items = yield prisma.items.findUnique({
-                where: {
-                    id: Number(id)
-                }
-            });
-            yield prisma.comments.deleteMany({
-                where: {
-                    id: Number(commentId),
-                }
-            });
-            const comment = yield prisma.comments.findMany({
-                where: {
-                    move__id: Number(id),
-                }
-            });
-            let arr = yield prisma.rating.findMany({
-                where: {
-                    item__id: Number(id)
-                }
-            });
-            yield prisma.items.findMany({});
-            const rating = yield prisma.rating.deleteMany({
-                where: {
-                    name: String(req.session.name),
-                    item__id: Number(itemsID)
-                }
-            });
-            let summ = 0;
-            let k = 0;
-            for (let i = 0; i < arr.length; i++) {
-                summ = summ + arr[i].rate;
-                k = i + 1;
-            }
-            let average = summ / k;
-            let rounded = Math.round(average * 10) / 10;
-            res.redirect(`/des__film/${itemsID}`);
-        });
-    }
+    // async delete__comment(req: Request, res: Response) {
+    //     const { id } = req.params;
+    //     const { move__id, text, item__id ,itemsID, user__name, nameId, commentId, ratingId } = req.body;
+    //     const items = await prisma.items.findUnique({
+    //         where: {
+    //             id: Number(id)  
+    //         }
+    //     });
+    //     await prisma.comments.deleteMany({
+    //         where: {
+    //             id: Number(commentId),
+    //         }
+    //     });
+    //     const comment = await prisma.comments.findMany({
+    //         where: {
+    //             move__id:Number(id),
+    //         }
+    //     });
+    //     let arr = await prisma.rating.findMany({
+    //         where:{
+    //             item__id: Number(id)
+    //         }
+    //     })
+    //     await prisma.items.findMany({})
+    //     const rating = await prisma.rating.deleteMany({
+    //         where: {
+    //             name:String(req.session.name),
+    //             item__id:Number(itemsID)
+    //         }
+    //     });
+    //     let summ = 0;
+    //     let k = 0 ;
+    //     for(let i = 0; i < arr.length; i++){
+    //         summ = summ + arr[i].rate;
+    //         k = i + 1;
+    //     }
+    //     let average = summ / k
+    //     let rounded = Math.round(average * 10) / 10
+    //     res.redirect(`/des__film/${itemsID}`);
+    // }
     show(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;

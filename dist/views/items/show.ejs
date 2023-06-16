@@ -131,11 +131,11 @@
                 <!-- <iframe class="video" width="560" height="315" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> -->
             </div>
 
-            <div class="ratingForm">
+            <div class="ratingForm" id="rating-wrapper">
 
-                <form action="/rating/<%= items.id %>" method="post">
-                    <input type="hidden" name="item__id" value="<%= items.id %>">
-                    <input type="hidden" name="item__name" value="<%= items.name %>">
+                <form action="/rating/<%= items.id %>" method="post" id="rate-form">
+
+                    <!-- <input type="hidden" name="item__name" value="<%= items.name %>"> -->
 
 
                     <% if (auth) { %>
@@ -147,28 +147,28 @@
                             </div>
                             <div class="star-widget">
                                 <% for (let i=5; i> 0; i--) { %>
-                                    <input type="radio" name="rate" id="rate-<%= i %>" value="<%= i %>"><label
-                                        for="rate-<%= i %>" class="star__icon"><%- include('../icons/star__icon.ejs')
+                                    <input type="radio" name="rate" id="rate-<%= i %>" value="<%= i %>">
+                                    <label for="rate-<%= i %>" class="star__icon"><%- include('../icons/star__icon.ejs')
                                             %></label>
                                     <% } %>
 
 
-                                        <header>
+                                        <div>
 
                                             <div class="textarea">
                                                 <textarea cols="30" placeholder="Describe your  experense..."
                                                     type="text" name="text" required></textarea>
                                             </div>
                                             <div class="Btn">
-                                                <button type="submit" id="button">Post</button>
+                                                <p onclick="createRate()">Post</p>
                                             </div>
-                                        </header>
+                                        </div>
 
                             </div>
                         </div>
 
                         <% if (mark) { %>
-                            <script>
+                            <!-- <script>
                                 const post = document.querySelector(".post")
                                 const widget = document.querySelector(".star-widget")
 
@@ -176,9 +176,9 @@
                                 i == true;
                                 widget.style.display = "block";
                                 post.style.display = "none";
-                            </script>
+                            </script> -->
                             <% } else { %>
-                                <script>
+                                <!-- <script>
                                     const button = document.getElementById("button")
                                     const post = document.querySelector(".post")
                                     const widget = document.querySelector(".star-widget")
@@ -195,14 +195,36 @@
                                         i = false;
                                         return false;
                                     })
-                                </script>
+                                </script> -->
 
                                 <% } %>
                                     <% } %>
                 </form>
             </div>
+            <script>
+                async function createRate() {
+                    let RateForm = document.querySelector('#rate-form');
 
+                    let rateFormData = new FormData(RateForm);
 
+                    
+
+                    let response = await fetch(RateForm.action, {
+                        'method': 'POST',
+                        'body': JSON.stringify({
+                            'rate' : rateFormData.get('rate'),
+                            'text' : rateFormData.get('text'),
+
+                        }),
+                        'headers': {
+                            'Content-Type': 'application/json',
+                        }
+                    })
+
+                    console.log(response)
+                }
+
+            </script>
 
             <div class="comment" id="comment">
 
@@ -217,7 +239,7 @@
                     <div name="text" class="commentText">
                         <%= comments[i].text %>
                     </div>
-        
+
                     <% if (auth) { %>
                         <% if (items.name == name || admin) { %>
                     <form action="/delete/comment/<%= comments[i].id %>" method="post">
@@ -255,6 +277,8 @@
 
         getCommentAndShow();
     </script>
+
+
 
 
     <%- include('../particles/footer.ejs') %>

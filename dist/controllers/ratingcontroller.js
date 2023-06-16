@@ -16,7 +16,7 @@ const prisma = new client_1.PrismaClient();
 class RatingController {
     rating(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { item__id, rate, text } = req.body;
+            const { rate, text } = req.body;
             const { id } = req.params;
             yield prisma.items.findUnique({
                 where: {
@@ -25,14 +25,9 @@ class RatingController {
             });
             const rating = yield prisma.rating.create({
                 data: {
-                    rate: Number(rate),
                     name: String(req.session.name),
-                    item__id: Number(id)
-                }
-            });
-            yield prisma.items.findMany({
-                where: {
-                    id: Number(1)
+                    item__id: Number(id),
+                    rate: Number(rate),
                 }
             });
             yield prisma.comments.create({
@@ -56,7 +51,7 @@ class RatingController {
             }
             let average = summ / k;
             let rounded = Math.round(average * 10) / 10;
-            res.redirect(`/des__film/${id}`);
+            res.status(200);
         });
     }
 }

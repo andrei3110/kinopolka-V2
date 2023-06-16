@@ -8,6 +8,8 @@ import { AuthController } from './controllers/AuthController';
 import { CommentsController } from './controllers/CommentsController';
 import { CategoriesController } from './controllers/CategoriesController';
 import { SubscribeController } from './controllers/SubscribeController';
+
+const cors = require('cors');
 const app: Express = express();
 const itemsController = new ItemsController();
 const ratingController = new RatingController();
@@ -15,8 +17,12 @@ const authController = new AuthController();
 const commentsController = new CommentsController();
 const categoriesController = new CategoriesController();
 const subscribeController = new SubscribeController();
+
+
+app.use(cors());
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }))
+app.use(express.json());       
+app.use(express.urlencoded({extended: true})); 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -25,20 +31,20 @@ declare module "express-session" {
   interface SessionData {
     auth: boolean,
     admin: boolean,
-    searchMove:boolean,
+    searchMove: boolean,
     username: string,
     userId: Number,
     category: Number,
     mark: boolean,
     name: String,
-    password:String,
-    filter:Boolean,
-    UserType:String,
-    test:Number,
-    count:Number,
+    password: String,
+    filter: Boolean,
+    UserType: String,
+    test: Number,
+    count: Number,
     active: String,
-    status : String,// статус фильма 
-    subscription:String, // статус пользователя 
+    status: String,// статус фильма 
+    subscription: String, // статус пользователя 
     interStatus: String // промежуточный статус пользователя
 
 
@@ -226,14 +232,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-app.post("/editAvatar", upload.single("avatar"), (req:Request, res:Response) => {
+app.post("/editAvatar", upload.single("avatar"), (req: Request, res: Response) => {
   itemsController.editAvatar(req, res);
-});  
-app.post("/AddItems", upload.single("file"), (req:Request, res:Response) => {
+});
+app.post("/AddItems", upload.single("file"), (req: Request, res: Response) => {
   itemsController.AddItems(req, res);
-});  
+});
 
-app.get('/api/v1/comments/:id/show', (req:Request, res:Response) => {
+app.get('/api/v1/comments/:id/show', (req: Request, res: Response) => {
   commentsController.show(req, res);
 });
 
