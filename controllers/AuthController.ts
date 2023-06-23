@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { addLog } from '../logs/addLog';
+import bcrypt from "bcrypt";
 
 const prisma: PrismaClient = new PrismaClient();
 
@@ -14,7 +15,7 @@ export class AuthController {
                 name
             }
         });
-
+        
         if (users[0] != undefined) {
             req.session.auth = false;
             res.redirect('/register')
@@ -23,10 +24,11 @@ export class AuthController {
             res.redirect('/register')
             req.session.auth = false;
         } else {
+            const saltRounds = 10;
             const users = await prisma.users.create({
                 data: {
                     name: name,
-                    password: password,
+                    password: bcrypt.hashSync(password, saltRounds),
                     status: 'Free',
                     type:'User',
                     avatar: 'default_avatar.jpg'
@@ -64,14 +66,19 @@ export class AuthController {
 
         const users = await prisma.users.findMany({
             where: {
-                name,
-                password,
+                name:name
             }
         });
         if (users[0] != undefined) {
+            if ( bcrypt.compareSync(password, String(users[0].password))) {
             req.session.name = name
             req.session.userId = users[0].id
-            req.session.password = password
+           
+   
+            req.session.password = req.body.password
+          
+
+            
             if (users[0].type == "Admin") {
                 req.session.auth = true;
                 req.session.admin = true
@@ -94,11 +101,13 @@ export class AuthController {
                     req.session.subscription = 'Free'
                 }
                 res.redirect('/home');
+                
             } else {
                 req.session.auth = false;
                 res.redirect('/enter')
                 req.session.name = undefined
             }
+        }
         } else {
             req.session.auth = false;
             res.redirect('/enter')

@@ -200,7 +200,7 @@ async function users() {
         data: [
             { 
                 name: "Admin" ,
-                password: '311007',
+                password: '$2b$10$jOW3VhJ7k8lPagE4/S.BL.d67YNfmAtJsEXPMPzUe3f463SAKPWv2',
                 status:'подписка',
                 avatar:'Alto.png',
                 type:"Admin"
