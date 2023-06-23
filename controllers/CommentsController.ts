@@ -55,16 +55,29 @@ export class CommentsController {
       
     //     res.redirect(`/des__film/${itemsID}`);
     // }
-
-    async show(req: Request, res: Response) {
+    async delete_Comment(req: Request, res: Response) {
+        const {itemsID} = req.body;
         const {id} = req.params
-        const comments = await prisma.comments.findMany({
+        const comments = await prisma.comments.delete({
             where:{
                 id:Number(id)
             }
         });
         
-        res.status(200).json(comments);
+       
+        res.redirect(`/des__film/${itemsID}`)
+    }    
+    async show(req: Request, res: Response) {
+        const {id} = req.params
+        const comments = await prisma.comments.findMany({
+            where:{
+                move__id:Number(id)
+            }
+        });
+        let i = 55;
+        let mas= [i,comments]
+       
+        res.status(200).json(mas);
     }    
 }
 

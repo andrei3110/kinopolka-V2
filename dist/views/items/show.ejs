@@ -160,7 +160,7 @@
                                                     type="text" name="text" required></textarea>
                                             </div>
                                             <div class="Btn">
-                                                <p onclick="createRate()">Post</p>
+                                                <p onclick="createRate()" id="button">Post</p>
                                             </div>
                                         </div>
 
@@ -168,7 +168,7 @@
                         </div>
 
                         <% if (mark) { %>
-                            <!-- <script>
+                            <script>
                                 const post = document.querySelector(".post")
                                 const widget = document.querySelector(".star-widget")
 
@@ -176,9 +176,9 @@
                                 i == true;
                                 widget.style.display = "block";
                                 post.style.display = "none";
-                            </script> -->
+                            </script>
                             <% } else { %>
-                                <!-- <script>
+                                <script>
                                     const button = document.getElementById("button")
                                     const post = document.querySelector(".post")
                                     const widget = document.querySelector(".star-widget")
@@ -195,7 +195,7 @@
                                         i = false;
                                         return false;
                                     })
-                                </script> -->
+                                </script>
 
                                 <% } %>
                                     <% } %>
@@ -203,17 +203,21 @@
             </div>
             <script>
                 async function createRate() {
+                    const post = document.querySelector(".post")
+                    const widget = document.querySelector(".star-widget")
+                    let ratingWrapper = document.querySelector('#rating-wrapper');
                     let RateForm = document.querySelector('#rate-form');
 
                     let rateFormData = new FormData(RateForm);
+                    // ratingWrapper.innerHTML = '';
+                    widget.style.display = "none";
+                    post.style.display = "block";
 
-                    
-
-                    let response = await fetch(RateForm.action, {
+                    await fetch(RateForm.action, {
                         'method': 'POST',
                         'body': JSON.stringify({
-                            'rate' : rateFormData.get('rate'),
-                            'text' : rateFormData.get('text'),
+                            'rate': rateFormData.get('rate'),
+                            'text': rateFormData.get('text'),
 
                         }),
                         'headers': {
@@ -221,8 +225,10 @@
                         }
                     })
 
-                    console.log(response)
+
+
                 }
+
 
             </script>
 
@@ -231,53 +237,42 @@
                 <div class="commentName">Комментарии:</div>
 
                 <div class="comment__wrapper" id="comment-wrapper">
-                    <!-- <% for (let i=0; i < comments.length; i++) { %>
-                <div class="comment__box">
-                    <div name="userName" class="commentUsername">
-                        <%= comments[i].user__name %>
-                    </div>
-                    <div name="text" class="commentText">
-                        <%= comments[i].text %>
-                    </div>
-
-                    <% if (auth) { %>
-                        <% if (items.name == name || admin) { %>
-                    <form action="/delete/comment/<%= comments[i].id %>" method="post">
-                        <input type="hidden" name="commentId" value="<%= comments[i].id %>">
-                        <input type="hidden" name="itemsID" value="<%= items.id %>">
-                        <input type="hidden" name="commentName" value="<%= comments[i].userName %>">
-                        <input class="deleteComment" type="submit" value="del">
-                    </form>
-                    <% } %>
-
-                    <% } %>
-                </div>
-                <% } %> -->
+                    
                 </div>
             </div>
         </div>
-    </div>
+    </div>                         
 
     <script>
         async function getCommentAndShow() {
             let commentWrapper = document.querySelector('#comment-wrapper');
-            commentWrapper.innerHTML = '';
+
 
             let response = await fetch('/api/v1/comments/<%= items.id %>/show');
 
             let comments = await response.json();
-
-            comments.forEach(comment => {
+           
+            comments[1].forEach(comment => {
                 commentWrapper.innerHTML += `<div class="comment__box">
                     <div name="userName" class="commentUsername">${comment.user__name}</div>
                     <div name="text" class="commentText">${comment.text}</div>
-                </div>`;
+                </div> 
+                <% if (auth) { %>
+                        <% if (items.name == name || admin) { %>
+                    <form action="/delete/comment/${comment.id}" method="post">
+                        <input type="hidden" name="commentId" value=" ${comment.id}">
+                        <input type="hidden" name="itemsID" value="<%= items.id %>">
+                        <input type="hidden" name="commentName" value=" ${comment.user__name}">
+                        <input class="deleteComment" type="submit" value="del">
+                    </form>
+                    <% } %>
+                <% } %>
+                `;
             });
         }
 
         getCommentAndShow();
     </script>
-
 
 
 

@@ -30,6 +30,7 @@ model items {
   treller      String?    @db.Text
 
   Genres        items__genres[]
+  Users        basket[]
 }
 model genres {
   id       Int     @id @default(autoincrement())
@@ -53,29 +54,26 @@ model users {
   status   String? @db.VarChar(255)
   avatar   String? @db.VarChar(255)
   type     String  @db.VarChar(5)
+
+  Items   basket[]
 }
-model rating {
-  id       Int     @id @default(autoincrement())
-  rate     Int?    @db.Int
-  item__id Int?    @db.Int
-  name     String? @db.VarChar(255)
+model basket {
+  relItem       items    @relation(fields:[itemId], references: [id])
+  itemId        Int
+  relUsers      users @relation(fields:[usersId], references: [id])
+  usersId       Int
+
+  @@id([itemId, usersId])
 }
+
 model comments {
   id         Int     @id @default(autoincrement())
+  rate     Int?    @db.Int
   user__name String? @db.VarChar(255)
   move__id   Int?    @db.Int
   text       String? @db.VarChar(255)
 }
 
-model basket {
-  id       Int     @id @default(autoincrement())
-  name     String? @db.VarChar(255)
-  Username String? @db.VarChar(255)
-  image    String? @db.VarChar(255)
-  genre    String? @db.VarChar(255)
-  country  String? @db.VarChar(255)
-  age      String? @db.VarChar(255)
-}
 
 model categories {
   id      Int     @id @default(autoincrement())

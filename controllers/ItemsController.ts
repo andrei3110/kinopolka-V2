@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { items, users, basket, items__genres, comments, categories, PrismaClient } from '@prisma/client';
+import { items, users, items__genres, comments, categories, PrismaClient } from '@prisma/client';
 import { validateHeaderValue } from 'http';
 // import "./authorizationcontroller"
 const prisma: PrismaClient = new PrismaClient();
@@ -142,17 +142,34 @@ export class ItemsController {
     }
 
     async basket(req: Request, res: Response) {
-        const { name, image, country, age, genre } = req.body;
-        const basket = await prisma.basket.findMany({
-            where: {
-                name: name,
-                image: image,
-                country: country,
-                age: age,
-                genre: genre,
-                Username: String(req.session.name)
+   const {id} = req.params
+        const users = await prisma.users.findMany({
+            where:{
+                name:req.session.name
+            },
+            select:{
+                Items:{
+                    select:{
+                        relItem:{
+                            select:{
+                                id:true
+                            }
+                        }
+                    }
+                }
             }
-        });
+        })
+        let arr = []
+        for (let i = 0;i < users[0].Items.length; i ++){
+            arr.push(users[0].Items[i].relItem.id)
+        }
+        const items = await prisma.items.findMany({
+            where:{
+                id:{
+                    in: arr
+                }
+            }
+        })
         const categories = await prisma.categories.findMany({})
         res.render('cart/index', {
             name: req.session.name,
@@ -161,7 +178,9 @@ export class ItemsController {
             status: req.session.status,
             category: req.session.category,
             'categories': categories,
-            'basket': basket
+            'items':items,
+            'users':users
+          
         });
     }
     async users(req: Request, res: Response) {
@@ -198,12 +217,7 @@ export class ItemsController {
         });
         await prisma.items.findMany({});
 
-        const rating = await prisma.rating.findMany({
-            where: {
-                item__id: Number(id),
-                name: String(req.session.name),
-            }
-        });
+       
         await prisma.items.findMany({
             where: {
                 name: nameId
@@ -214,10 +228,11 @@ export class ItemsController {
         const comment = await prisma.comments.findMany({
             where: {
                 move__id: Number(id),
+                user__name: String(req.session.name),
             }
 
         });
-        if (rating[0] != undefined) {
+        if (comment[0] != undefined) {
 
             req.session.mark = false
 
@@ -227,9 +242,9 @@ export class ItemsController {
         }
 
         // const {item__id} = req.body
-        let arr = await prisma.rating.findMany({
+        let arr = await prisma.comments.findMany({
             where: {
-                item__id: Number(id)
+                move__id: Number(id)
             }
         })
 
@@ -237,7 +252,7 @@ export class ItemsController {
         let k = 0;
 
         for (let i = 0; i < arr.length; i++) {
-            summ = summ + arr[i].rate;
+            summ = summ + Number(arr[i].rate)
             k = i + 1;
         }
         let average = summ / k
@@ -249,14 +264,10 @@ export class ItemsController {
             }
 
         });
-        await prisma.rating.findMany({
-            where: {
-                name: String(req.session.name),
-            }
-        })
+        
         res.render('items/show', {
             'items': items,
-            'rating': rating,
+           
             'comments': comment,
             'categories': categories,
             number: Number(rounded),
@@ -306,7 +317,6 @@ export class ItemsController {
             auth: req.session.auth,
             status: req.session.status,
             admin: req.session.admin,
-            alert: req.session.alert,
             mark: req.session.mark
         });
     }
@@ -323,7 +333,6 @@ export class ItemsController {
             auth: req.session.auth,
             status: req.session.status,
             admin: req.session.admin,
-            alert: req.session.alert,
             mark: req.session.mark
         });
     }
@@ -340,7 +349,6 @@ export class ItemsController {
             auth: req.session.auth,
             status: req.session.status,
             admin: req.session.admin,
-            alert: req.session.alert,
             mark: req.session.mark
         });
     }
@@ -410,7 +418,7 @@ export class ItemsController {
             })
             req.session.name = lastName
             if (data[0] == undefined) {
-                req.session.alert = undefined
+               
                 res.redirect('/editProfile')
             } else {
                 res.redirect('/profile')
@@ -423,37 +431,48 @@ export class ItemsController {
     }
 
     async save__Video(req: Request, res: Response) {
-        const { name, image, country, age, genre, Username } = req.body;
-        const items = await prisma.items.findMany({
-            where: {
-                name: name,
-                image: image,
-                country: country,
-                age: age,
-                genre: genre
+        const { id} = req.params;
+       
+        const user = await prisma.users.findMany({
+            where:{
+                name:req.session.name
             }
-        });
-
-        await prisma.basket.create({
-            data: {
-                name: name,
-                image: image,
-                country: country,
-                age: age,
-                genre: genre,
-                Username: String(req.session.name)
+        })
+        const basket = await prisma.basket.findMany({
+            where:{
+                itemId:Number(id),
+                usersId:Number(user[0].id)
             }
-        });
+        })
+        if(basket[0] == undefined){
+            await prisma.basket.create({
+                data:{
+                    itemId:Number(id),
+                    usersId:Number(user[0].id)
+                }
+            })
+        }
+       
+        
         res.redirect('/basket');
     }
 
     async delete__Video(req: Request, res: Response) {
         const { id } = req.params;
-        const basket = await prisma.basket.delete({
-            where: {
-                id: Number(id)
+        const items = await prisma.items.findUnique({
+            where:{
+                id:Number(id)
             }
-        });
+        })
+        if (items != null) { 
+            const basket = await prisma.basket.deleteMany({
+                where: {
+                    itemId:Number(id),
+            
+                }
+            });
+        }
+        
         res.redirect('/basket');
     }
     async delete__users(req: Request, res: Response) {
@@ -592,7 +611,7 @@ export class ItemsController {
         const items = await prisma.items.findMany({})
         const basket = await prisma.basket.findMany({
             where: {
-                Username: String(req.session.name)
+                usersId: Number(req.session.userId)
             }
         })
         let k = 0

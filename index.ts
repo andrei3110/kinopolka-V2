@@ -9,7 +9,6 @@ import { CommentsController } from './controllers/CommentsController';
 import { CategoriesController } from './controllers/CategoriesController';
 import { SubscribeController } from './controllers/SubscribeController';
 
-const cors = require('cors');
 const app: Express = express();
 const itemsController = new ItemsController();
 const ratingController = new RatingController();
@@ -19,7 +18,6 @@ const categoriesController = new CategoriesController();
 const subscribeController = new SubscribeController();
 
 
-app.use(cors());
 app.use(express.static('public'));
 app.use(express.json());       
 app.use(express.urlencoded({extended: true})); 
@@ -36,7 +34,7 @@ declare module "express-session" {
     userId: Number,
     category: Number,
     mark: boolean,
-    name: String,
+    name: string,
     password: String,
     filter: Boolean,
     UserType: String,
@@ -153,9 +151,7 @@ app.get("/subscribe", (req: Request, res: Response) => {
 app.get("/home", (req: Request, res: Response) => {
   itemsController.home(req, res);
 });
-app.get("/basket__btn", (req: Request, res: Response) => {
-  itemsController.basket(req, res);
-});
+
 app.get("/profile", (req: Request, res: Response) => {
   itemsController.profile(req, res);
 });
@@ -166,7 +162,7 @@ app.post("/delete/users/:id", (req: Request, res: Response) => {
   itemsController.delete__users(req, res);
 });
 app.post("/delete/comment/:id", (req: Request, res: Response) => {
-  commentsController.delete__comment(req, res);
+  commentsController.delete_Comment(req, res);
 });
 app.get("/cart", (req: Request, res: Response) => {
   itemsController.basket(req, res);
@@ -186,7 +182,7 @@ app.post("/addCategories", (req: Request, res: Response) => {
 app.get("/description", (req: Request, res: Response) => {
   itemsController.renderDes(req, res);
 });
-app.post("/save__Video", (req: Request, res: Response) => {
+app.post("/save__Video/:id", (req: Request, res: Response) => {
   itemsController.save__Video(req, res);
 });
 app.get("/save__Video", (req: Request, res: Response) => {

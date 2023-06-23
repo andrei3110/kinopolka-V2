@@ -36,7 +36,7 @@
 
 
                     <% if (auth) { %>
-                    <form action="/save__Video" method="post">
+                    <form action="/save__Video/<%= items[i].id %>" method="post">
 
                         <input type="hidden" value="<%= items[i].name %>" name="name">
                         <input type="hidden" value=" <%= items[i].country %>" name="country">

@@ -54,15 +54,29 @@ class CommentsController {
     //     let rounded = Math.round(average * 10) / 10
     //     res.redirect(`/des__film/${itemsID}`);
     // }
+    delete_Comment(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { itemsID } = req.body;
+            const { id } = req.params;
+            const comments = yield prisma.comments.delete({
+                where: {
+                    id: Number(id)
+                }
+            });
+            res.redirect(`/des__film/${itemsID}`);
+        });
+    }
     show(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             const comments = yield prisma.comments.findMany({
                 where: {
-                    id: Number(id)
+                    move__id: Number(id)
                 }
             });
-            res.status(200).json(comments);
+            let i = 55;
+            let mas = [i, comments];
+            res.status(200).json(mas);
         });
     }
 }

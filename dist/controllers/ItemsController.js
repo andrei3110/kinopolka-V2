@@ -145,15 +145,32 @@ class ItemsController {
     }
     basket(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { name, image, country, age, genre } = req.body;
-            const basket = yield prisma.basket.findMany({
+            const { id } = req.params;
+            const users = yield prisma.users.findMany({
                 where: {
-                    name: name,
-                    image: image,
-                    country: country,
-                    age: age,
-                    genre: genre,
-                    Username: String(req.session.name)
+                    name: req.session.name
+                },
+                select: {
+                    Items: {
+                        select: {
+                            relItem: {
+                                select: {
+                                    id: true
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            let arr = [];
+            for (let i = 0; i < users[0].Items.length; i++) {
+                arr.push(users[0].Items[i].relItem.id);
+            }
+            const items = yield prisma.items.findMany({
+                where: {
+                    id: {
+                        in: arr
+                    }
                 }
             });
             const categories = yield prisma.categories.findMany({});
@@ -164,7 +181,8 @@ class ItemsController {
                 status: req.session.status,
                 category: req.session.category,
                 'categories': categories,
-                'basket': basket
+                'items': items,
+                'users': users
             });
         });
     }
@@ -200,12 +218,6 @@ class ItemsController {
             });
             const categories = yield prisma.categories.findMany({});
             yield prisma.items.findMany({});
-            const rating = yield prisma.rating.findMany({
-                where: {
-                    item__id: Number(id),
-                    name: String(req.session.name),
-                }
-            });
             yield prisma.items.findMany({
                 where: {
                     name: nameId
@@ -214,24 +226,25 @@ class ItemsController {
             const comment = yield prisma.comments.findMany({
                 where: {
                     move__id: Number(id),
+                    user__name: String(req.session.name),
                 }
             });
-            if (rating[0] != undefined) {
+            if (comment[0] != undefined) {
                 req.session.mark = false;
             }
             else {
                 req.session.mark = true;
             }
             // const {item__id} = req.body
-            let arr = yield prisma.rating.findMany({
+            let arr = yield prisma.comments.findMany({
                 where: {
-                    item__id: Number(id)
+                    move__id: Number(id)
                 }
             });
             let summ = 0;
             let k = 0;
             for (let i = 0; i < arr.length; i++) {
-                summ = summ + arr[i].rate;
+                summ = summ + Number(arr[i].rate);
                 k = i + 1;
             }
             let average = summ / k;
@@ -241,14 +254,8 @@ class ItemsController {
                     user__name: String(commentName),
                 }
             });
-            yield prisma.rating.findMany({
-                where: {
-                    name: String(req.session.name),
-                }
-            });
             res.render('items/show', {
                 'items': items,
-                'rating': rating,
                 'comments': comment,
                 'categories': categories,
                 number: Number(rounded),
@@ -292,7 +299,6 @@ class ItemsController {
                 auth: req.session.auth,
                 status: req.session.status,
                 admin: req.session.admin,
-                alert: req.session.alert,
                 mark: req.session.mark
             });
         });
@@ -311,7 +317,6 @@ class ItemsController {
                 auth: req.session.auth,
                 status: req.session.status,
                 admin: req.session.admin,
-                alert: req.session.alert,
                 mark: req.session.mark
             });
         });
@@ -330,7 +335,6 @@ class ItemsController {
                 auth: req.session.auth,
                 status: req.session.status,
                 admin: req.session.admin,
-                alert: req.session.alert,
                 mark: req.session.mark
             });
         });
@@ -406,7 +410,6 @@ class ItemsController {
                 });
                 req.session.name = lastName;
                 if (data[0] == undefined) {
-                    req.session.alert = undefined;
                     res.redirect('/editProfile');
                 }
                 else {
@@ -418,37 +421,44 @@ class ItemsController {
     }
     save__Video(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { name, image, country, age, genre, Username } = req.body;
-            const items = yield prisma.items.findMany({
+            const { id } = req.params;
+            const user = yield prisma.users.findMany({
                 where: {
-                    name: name,
-                    image: image,
-                    country: country,
-                    age: age,
-                    genre: genre
+                    name: req.session.name
                 }
             });
-            yield prisma.basket.create({
-                data: {
-                    name: name,
-                    image: image,
-                    country: country,
-                    age: age,
-                    genre: genre,
-                    Username: String(req.session.name)
+            const basket = yield prisma.basket.findMany({
+                where: {
+                    itemId: Number(id),
+                    usersId: Number(user[0].id)
                 }
             });
+            if (basket[0] == undefined) {
+                yield prisma.basket.create({
+                    data: {
+                        itemId: Number(id),
+                        usersId: Number(user[0].id)
+                    }
+                });
+            }
             res.redirect('/basket');
         });
     }
     delete__Video(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const basket = yield prisma.basket.delete({
+            const items = yield prisma.items.findUnique({
                 where: {
                     id: Number(id)
                 }
             });
+            if (items != null) {
+                const basket = yield prisma.basket.deleteMany({
+                    where: {
+                        itemId: Number(id),
+                    }
+                });
+            }
             res.redirect('/basket');
         });
     }
@@ -588,7 +598,7 @@ class ItemsController {
             const items = yield prisma.items.findMany({});
             const basket = yield prisma.basket.findMany({
                 where: {
-                    Username: String(req.session.name)
+                    usersId: Number(req.session.userId)
                 }
             });
             let k = 0;

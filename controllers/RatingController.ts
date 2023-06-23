@@ -19,27 +19,21 @@ export class RatingController {
 
         })
         
-        const rating = await prisma.rating.create({
-            data: {
-                
-                name: String(req.session.name),
-                item__id: Number(id),
-                rate: Number(rate),
-            } 
-        })
+      
        
        await prisma.comments.create({
             data: {
                 text: text,
                 user__name: String(req.session.name),
-                move__id: Number(id)
+                move__id: Number(id),
+                rate: Number(rate),
             }
         })
         req.session.mark = false
        
-        let arr = await prisma.rating.findMany({
+        let arr = await prisma.comments.findMany({
             where:{
-                item__id: Number(id)
+                move__id: Number(id)
             }
         })
 
@@ -47,7 +41,7 @@ export class RatingController {
         let k = 0 ;
 
         for(let i = 0; i < arr.length; i++){
-            summ = summ + arr[i].rate;
+            summ = summ + Number(arr[i].rate)
             k = i + 1;
         }
 

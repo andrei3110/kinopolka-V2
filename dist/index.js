@@ -13,7 +13,6 @@ const AuthController_1 = require("./controllers/AuthController");
 const CommentsController_1 = require("./controllers/CommentsController");
 const CategoriesController_1 = require("./controllers/CategoriesController");
 const SubscribeController_1 = require("./controllers/SubscribeController");
-const cors = require('cors');
 const app = (0, express_1.default)();
 const itemsController = new ItemsController_1.ItemsController();
 const ratingController = new RatingController_1.RatingController();
@@ -21,7 +20,6 @@ const authController = new AuthController_1.AuthController();
 const commentsController = new CommentsController_1.CommentsController();
 const categoriesController = new CategoriesController_1.CategoriesController();
 const subscribeController = new SubscribeController_1.SubscribeController();
-app.use(cors());
 app.use(express_1.default.static('public'));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
@@ -121,9 +119,6 @@ app.get("/subscribe", (req, res) => {
 app.get("/home", (req, res) => {
     itemsController.home(req, res);
 });
-app.get("/basket__btn", (req, res) => {
-    itemsController.basket(req, res);
-});
 app.get("/profile", (req, res) => {
     itemsController.profile(req, res);
 });
@@ -134,7 +129,7 @@ app.post("/delete/users/:id", (req, res) => {
     itemsController.delete__users(req, res);
 });
 app.post("/delete/comment/:id", (req, res) => {
-    commentsController.delete__comment(req, res);
+    commentsController.delete_Comment(req, res);
 });
 app.get("/cart", (req, res) => {
     itemsController.basket(req, res);
@@ -154,7 +149,7 @@ app.post("/addCategories", (req, res) => {
 app.get("/description", (req, res) => {
     itemsController.renderDes(req, res);
 });
-app.post("/save__Video", (req, res) => {
+app.post("/save__Video/:id", (req, res) => {
     itemsController.save__Video(req, res);
 });
 app.get("/save__Video", (req, res) => {
