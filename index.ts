@@ -64,6 +64,7 @@ app.get("/categories/:id", (req: Request, res: Response) => {
 app.get("/filters/:id", (req: Request, res: Response) => {
   categoriesController.filters(req, res);
 });
+
 app.get("/bySubscribe/:id", (req: Request, res: Response) => {
   subscribeController.BySubscribe(req, res);
 });
@@ -78,7 +79,7 @@ app.get("/from/movies/:id", (req: Request, res: Response) => {
 app.get("/from/country/:name", (req: Request, res: Response) => {
   categoriesController.ByCountry(req, res);
 });
-app.get("/from/years/:date", (req: Request, res: Response) => {
+app.get("/from/years/:name", (req: Request, res: Response) => {
   categoriesController.ByYear(req, res);
 });
 app.get("/types/free", (req: Request, res: Response) => {
@@ -89,9 +90,6 @@ app.get("/types/subscribe", (req: Request, res: Response) => {
 });
 app.get("/from/cartoons/:id", (req: Request, res: Response) => {
   categoriesController.cartoons(req, res);
-});
-app.get("/movies", (req: Request, res: Response) => {
-  categoriesController.movies(req, res);
 });
 
 //AUTH//

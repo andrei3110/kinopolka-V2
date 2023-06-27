@@ -31,13 +31,13 @@ export class ItemsController {
         const genres = await prisma.genres.findMany({})
         const categories = await prisma.categories.findMany({})
         const users = await prisma.users.findMany({
-            where:{
-                name:String(req.session.name)
+            where: {
+                name: String(req.session.name)
             }
         })
-        if(users[0] != undefined){
+        if (users[0] != undefined) {
         }
- 
+
         res.render('home', {
             'categories': categories,
             'genres': genres,
@@ -67,11 +67,35 @@ export class ItemsController {
     }
 
     async Add(req: Request, res: Response) {
-        const genres = await prisma.genres.findMany({})
+        const attribute = await prisma.attribute.findMany({
+            where: {
+                id: 1
+            },
+            select: {
+                attribute_values: {
+                    select: {
+                        relAttribute_value: {
+                            select: {
+                                name: true,
+                                id:   true
+                            }
+                        }
+                    }
+                }
+            }
+        })
+        let arr =[]
+        for(let i = 0; i < attribute[0].attribute_values.length;i ++){
+            // console.log(attribute[0].attribute_values[i].relAttribute_value.name)
+            arr.push({
+                name:attribute[0].attribute_values[i].relAttribute_value.name,
+                 id:attribute[0].attribute_values[i].relAttribute_value.id
+                })
+        }
         const categories = await prisma.categories.findMany({})
         const items = await prisma.items.findMany({})
         res.render('items/create', {
-            'genres': genres,
+            'genres': arr,
             'items': items,
             'categories': categories,
             auth: req.session.auth,
@@ -91,15 +115,20 @@ export class ItemsController {
             one = req.body.check
 
         }
-        let arr = []
+
+        let arr = [];
+        
         for (let i = 0; i < one.length; i++) {
-            let genres = await prisma.genres.findMany({
+            let attribute_values = await prisma.attribute_values.findMany({
                 where: {
                     id: Number(one[i])
                 }
             })
-            arr.push(genres[0].name)
+            arr.push(attribute_values[0].name)
         }
+
+      
+        
         const items = await prisma.items.create({
             data: {
                 name: name,
@@ -113,7 +142,7 @@ export class ItemsController {
                 type: Number(req.body.check__radio),
                 country: country,
                 age: age,
-                year: Number(year),
+                year: String(year),
                 genre: String(arr),
                 status: status,
                 video: video,
@@ -122,7 +151,7 @@ export class ItemsController {
         });
 
         for (let i = 0; i < one.length; i++) {
-            let genres = await prisma.genres.findMany({
+            let attribute_values = await prisma.attribute_values.findMany({
                 where: {
                     id: Number(one[i])
                 }
@@ -130,7 +159,7 @@ export class ItemsController {
             await prisma.items__genres.create({
                 data: {
                     itemId: items.id,
-                    genreId: genres[0].id
+                    genreId: attribute_values[0].id
 
                 }
             })
@@ -142,17 +171,17 @@ export class ItemsController {
     }
 
     async basket(req: Request, res: Response) {
-   const {id} = req.params
+        const { id } = req.params
         const users = await prisma.users.findMany({
-            where:{
-                name:req.session.name
+            where: {
+                name: req.session.name
             },
-            select:{
-                Items:{
-                    select:{
-                        relItem:{
-                            select:{
-                                id:true
+            select: {
+                Items: {
+                    select: {
+                        relItem: {
+                            select: {
+                                id: true
                             }
                         }
                     }
@@ -160,12 +189,12 @@ export class ItemsController {
             }
         })
         let arr = []
-        for (let i = 0;i < users[0].Items.length; i ++){
+        for (let i = 0; i < users[0].Items.length; i++) {
             arr.push(users[0].Items[i].relItem.id)
         }
         const items = await prisma.items.findMany({
-            where:{
-                id:{
+            where: {
+                id: {
                     in: arr
                 }
             }
@@ -178,9 +207,9 @@ export class ItemsController {
             status: req.session.status,
             category: req.session.category,
             'categories': categories,
-            'items':items,
-            'users':users
-          
+            'items': items,
+            'users': users
+
         });
     }
     async users(req: Request, res: Response) {
@@ -217,7 +246,7 @@ export class ItemsController {
         });
         await prisma.items.findMany({});
 
-       
+
         await prisma.items.findMany({
             where: {
                 name: nameId
@@ -264,10 +293,10 @@ export class ItemsController {
             }
 
         });
-        
+
         res.render('items/show', {
             'items': items,
-           
+
             'comments': comment,
             'categories': categories,
             number: Number(rounded),
@@ -306,8 +335,8 @@ export class ItemsController {
     }
     async editProfile(req: Request, res: Response) {
         const users = await prisma.users.findMany({
-            where:{
-                id:Number(req.session.userId)
+            where: {
+                id: Number(req.session.userId)
             }
         })
         const categories = await prisma.categories.findMany({})
@@ -322,8 +351,8 @@ export class ItemsController {
     }
     async editProfileName(req: Request, res: Response) {
         const users = await prisma.users.findMany({
-            where:{
-                id:Number(req.session.userId)
+            where: {
+                id: Number(req.session.userId)
             }
         })
         const categories = await prisma.categories.findMany({})
@@ -338,8 +367,8 @@ export class ItemsController {
     }
     async editProfileAvatar(req: Request, res: Response) {
         const users = await prisma.users.findMany({
-            where:{
-                id:Number(req.session.userId)
+            where: {
+                id: Number(req.session.userId)
             }
         })
         const categories = await prisma.categories.findMany({})
@@ -418,7 +447,7 @@ export class ItemsController {
             })
             req.session.name = lastName
             if (data[0] == undefined) {
-               
+
                 res.redirect('/editProfile')
             } else {
                 res.redirect('/profile')
@@ -431,48 +460,48 @@ export class ItemsController {
     }
 
     async save__Video(req: Request, res: Response) {
-        const { id} = req.params;
-       
+        const { id } = req.params;
+
         const user = await prisma.users.findMany({
-            where:{
-                name:req.session.name
+            where: {
+                name: req.session.name
             }
         })
         const basket = await prisma.basket.findMany({
-            where:{
-                itemId:Number(id),
-                usersId:Number(user[0].id)
+            where: {
+                itemId: Number(id),
+                usersId: Number(user[0].id)
             }
         })
-        if(basket[0] == undefined){
+        if (basket[0] == undefined) {
             await prisma.basket.create({
-                data:{
-                    itemId:Number(id),
-                    usersId:Number(user[0].id)
+                data: {
+                    itemId: Number(id),
+                    usersId: Number(user[0].id)
                 }
             })
         }
-       
-        
+
+
         res.redirect('/basket');
     }
 
     async delete__Video(req: Request, res: Response) {
         const { id } = req.params;
         const items = await prisma.items.findUnique({
-            where:{
-                id:Number(id)
+            where: {
+                id: Number(id)
             }
         })
-        if (items != null) { 
+        if (items != null) {
             const basket = await prisma.basket.deleteMany({
                 where: {
-                    itemId:Number(id),
-            
+                    itemId: Number(id),
+
                 }
             });
         }
-        
+
         res.redirect('/basket');
     }
     async delete__users(req: Request, res: Response) {
@@ -532,14 +561,15 @@ export class ItemsController {
 
         //     // }
         // })
-        
-        if (items != null) { 
+
+        if (items != null) {
             await prisma.items__genres.deleteMany({
                 where: {
                     itemId: Number(items.id)
-            }})
+                }
+            })
             await prisma.items.delete({
-                where:{
+                where: {
                     id: Number(id)
                 }
             })
@@ -628,14 +658,14 @@ export class ItemsController {
         for (let i = 0; i < comments.length; i++) {
             m = m + 1
         }
-       
+
         let type = ''
         if (users[0] != undefined) {
             if (users[0].type == 'Admin') {
                 req.session.UserType = 'Администратор'
             } else {
                 req.session.UserType = 'Пользователь'
-            }  
+            }
         }
 
         const categories = await prisma.categories.findMany({})
@@ -648,7 +678,7 @@ export class ItemsController {
             'commentsCount': m,
             'type': type,
             name: req.session.name,
-            UserType:req.session.UserType,
+            UserType: req.session.UserType,
             auth: req.session.auth,
             password: req.session.password,
             admin: req.session.admin

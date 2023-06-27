@@ -23,9 +23,9 @@ class CategoriesController {
                     type: Number(id),
                 }
             });
+            const attribute = yield prisma.attribute.findMany({});
             const genres = yield prisma.genres.findMany({});
             const cartoons = yield prisma.cartoonGenres.findMany({});
-            const filters = yield prisma.filters.findMany({});
             req.session.category = Number(id);
             res.render('types/index', {
                 auth: req.session.auth,
@@ -34,10 +34,10 @@ class CategoriesController {
                 status: req.session.status,
                 category: req.session.category,
                 count: req.session.count,
+                'attribute': attribute,
                 'items': items,
                 'categories': categories,
                 'genres': genres,
-                'filters': filters,
                 'cartoonGenres': cartoons
             });
         });
@@ -76,7 +76,7 @@ class CategoriesController {
                 }
             });
             const categories = yield prisma.categories.findMany({});
-            const filters = yield prisma.filters.findMany({});
+            const attribute = yield prisma.attribute.findMany({});
             res.render('types/movies', {
                 auth: req.session.auth,
                 active: req.session.active,
@@ -86,7 +86,7 @@ class CategoriesController {
                 count: req.session.count,
                 'categories': categories,
                 'items': items,
-                'filters': filters,
+                'attribute': attribute,
                 'genres': genres,
             });
         });
@@ -132,12 +132,12 @@ class CategoriesController {
             });
             const genres = yield prisma.genres.findMany({});
             const categories = yield prisma.categories.findMany({});
-            const filters = yield prisma.filters.findMany({});
+            const attribute = yield prisma.attribute.findMany({});
             res.render('search', {
                 'categories': categories,
                 'items': items,
-                'filters': filters,
                 'genre': genre,
+                'attribute': attribute,
                 'genres': genres,
                 auth: req.session.auth,
                 active: req.session.active,
@@ -190,7 +190,7 @@ class CategoriesController {
                     k = k + 1;
                 }
                 const categories = yield prisma.categories.findMany({});
-                const filters = yield prisma.filters.findMany({});
+                const attribute = yield prisma.attribute.findMany({});
                 res.render('types/movies', {
                     auth: req.session.auth,
                     status: req.session.status,
@@ -199,9 +199,9 @@ class CategoriesController {
                     count: req.session.count,
                     category: req.session.category,
                     'items': items,
+                    'attribute': attribute,
                     'cartoonGenres': genres,
                     'categories': categories,
-                    'filters': filters
                 });
             }
             else {
@@ -214,7 +214,7 @@ class CategoriesController {
                     }
                 });
                 const categories = yield prisma.categories.findMany({});
-                const filters = yield prisma.filters.findMany({});
+                const attribute = yield prisma.attribute.findMany({});
                 res.render('types/movies', {
                     auth: req.session.auth,
                     status: req.session.status,
@@ -224,7 +224,7 @@ class CategoriesController {
                     category: req.session.category,
                     'items': items,
                     'cartoonGenres': genres,
-                    'filters': filters,
+                    'attribute': attribute,
                     'categories': categories,
                 });
             }
@@ -265,11 +265,11 @@ class CategoriesController {
     }
     ByYear(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { date } = req.params;
+            const { name } = req.params;
             const currentType = Number(req.session.category);
             const count = yield prisma.items.count({
                 where: {
-                    year: Number(date),
+                    year: String(name),
                     type: Number(req.session.category)
                 }
             });
@@ -287,11 +287,11 @@ class CategoriesController {
                     skip: pages,
                     take: itemsPerPage,
                     where: {
-                        year: Number(date),
+                        year: String(name),
                         type: Number(req.session.category)
                     }
                 });
-                const filters = yield prisma.filters.findMany({});
+                const attribute = yield prisma.attribute.findMany({});
                 const categories = yield prisma.categories.findMany({});
                 let k = 0;
                 for (let i = 0; i < items.length; i++) {
@@ -304,20 +304,20 @@ class CategoriesController {
                     active: req.session.active,
                     count: req.session.count,
                     category: req.session.category,
-                    'filters': filters,
                     'items': items,
+                    'attribute': attribute,
                     'categories': categories
                 });
             }
             else {
+                const attribute = yield prisma.attribute.findMany({});
                 const categories = yield prisma.categories.findMany({});
                 const items = yield prisma.items.findMany({
                     where: {
-                        year: Number(date),
+                        year: String(name),
                         type: Number(req.session.category)
                     }
                 });
-                const filters = yield prisma.filters.findMany({});
                 res.render('types/movies', {
                     auth: req.session.auth,
                     status: req.session.status,
@@ -325,33 +325,11 @@ class CategoriesController {
                     active: req.session.active,
                     count: req.session.count,
                     category: req.session.category,
+                    'attribute': attribute,
                     'items': items,
-                    'filters': filters,
                     'categories': categories
                 });
             }
-        });
-    }
-    ByGenre(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { id } = req.params;
-            req.session.active = "genre";
-            const genres = yield prisma.genres.findMany({});
-            const cartoons = yield prisma.cartoonGenres.findMany({});
-            const categories = yield prisma.categories.findMany({});
-            const filters = yield prisma.filters.findMany({});
-            res.render('types/index', {
-                auth: req.session.auth,
-                count: req.session.count,
-                status: req.session.status,
-                admin: req.session.admin,
-                active: req.session.active,
-                category: req.session.category,
-                'categories': categories,
-                'genres': genres,
-                'filters': filters,
-                'cartoonGenres': cartoons
-            });
         });
     }
     byFree(req, res) {
@@ -363,7 +341,6 @@ class CategoriesController {
                 }
             });
             const categories = yield prisma.categories.findMany({});
-            const filters = yield prisma.filters.findMany({});
             res.render('types/movies', {
                 auth: req.session.auth,
                 active: req.session.active,
@@ -372,7 +349,6 @@ class CategoriesController {
                 category: req.session.category,
                 count: req.session.count,
                 'categories': categories,
-                'filters': filters,
                 'items': items,
             });
         });
@@ -430,12 +406,8 @@ class CategoriesController {
                         type: currentType
                     }
                 });
-                let k = 0;
-                for (let i = 0; i < items.length; i++) {
-                    k = k + 1;
-                }
+                const attribute = yield prisma.attribute.findMany({});
                 const categories = yield prisma.categories.findMany({});
-                const filters = yield prisma.filters.findMany({});
                 res.render('types/movies', {
                     auth: req.session.auth,
                     status: req.session.status,
@@ -443,8 +415,8 @@ class CategoriesController {
                     active: req.session.active,
                     count: req.session.count,
                     category: req.session.category,
+                    'attribute': attribute,
                     'items': items,
-                    'filters': filters,
                     'categories': categories
                 });
             }
@@ -457,8 +429,8 @@ class CategoriesController {
                         type: currentType
                     }
                 });
+                const attribute = yield prisma.attribute.findMany({});
                 const categories = yield prisma.categories.findMany({});
-                const filters = yield prisma.filters.findMany({});
                 res.render('types/movies', {
                     auth: req.session.auth,
                     status: req.session.status,
@@ -466,8 +438,8 @@ class CategoriesController {
                     active: req.session.active,
                     count: req.session.count,
                     category: req.session.category,
+                    'attribute': attribute,
                     'items': items,
-                    'filters': filters,
                     'categories': categories
                 });
             }
@@ -480,7 +452,6 @@ class CategoriesController {
                     status: 'подписка'
                 }
             });
-            const filters = yield prisma.filters.findMany({});
             const categories = yield prisma.categories.findMany({});
             res.render('types/movies', {
                 auth: req.session.auth,
@@ -489,7 +460,6 @@ class CategoriesController {
                 admin: req.session.admin,
                 category: req.session.category,
                 count: req.session.count,
-                'filters': filters,
                 'categories': categories,
                 'items': items,
             });
@@ -502,7 +472,6 @@ class CategoriesController {
                     status: 'бесплатно'
                 }
             });
-            const filters = yield prisma.filters.findMany({});
             const categories = yield prisma.categories.findMany({});
             res.render('types/movies', {
                 auth: req.session.auth,
@@ -511,7 +480,6 @@ class CategoriesController {
                 admin: req.session.admin,
                 category: req.session.category,
                 count: req.session.count,
-                'filters': filters,
                 'categories': categories,
                 'items': items,
             });
@@ -520,40 +488,59 @@ class CategoriesController {
     filters(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
-            const filtersBar = yield prisma.filters.findMany({
+            const attributes = yield prisma.attribute.findMany({
                 where: {
                     id: Number(id),
+                },
+                select: {
+                    attribute_values: {
+                        select: {
+                            relAttribute_value: {
+                                select: {
+                                    id: true
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            let arr = [];
+            for (let i = 0; i < attributes[0].attribute_values.length; i++) {
+                arr.push(attributes[0].attribute_values[i].relAttribute_value.id);
+            }
+            const attribute_values = yield prisma.attribute_values.findMany({
+                where: {
+                    id: {
+                        in: arr
+                    }
+                }
+            });
+            const attributeRoute = yield prisma.attribute.findMany({
+                where: {
+                    id: Number(id)
                 }
             });
             const categories = yield prisma.categories.findMany({});
-            const filters = yield prisma.filters.findMany({});
+            const attributeBar = yield prisma.attribute.findMany({});
             const genres = yield prisma.genres.findMany({});
             const cartoonGenres = yield prisma.cartoonGenres.findMany({});
             const items = yield prisma.items.findMany();
-            const country = yield prisma.country.findMany();
-            const years = yield prisma.years.findMany();
-            if (filtersBar[0].title == 'free' || filtersBar[0].title == 'subscribe') {
-                res.redirect(`/types/${filtersBar[0].title}`);
-            }
-            else {
-                res.render(`types/${filtersBar[0].title}`, {
-                    'categories': categories,
-                    'filtersBar': filtersBar,
-                    'items': items,
-                    'filters': filters,
-                    'country': country,
-                    'years': years,
-                    'cartoonGenres': cartoonGenres,
-                    'genres': genres,
-                    auth: req.session.auth,
-                    filter: req.session.filter,
-                    status: req.session.status,
-                    admin: req.session.admin,
-                    active: req.session.active,
-                    count: req.session.count,
-                    category: req.session.category,
-                });
-            }
+            res.render(`types/${attributeRoute[0].tag}`, {
+                'attributes': attributes,
+                'categories': categories,
+                'items': items,
+                'attribute_values': attribute_values,
+                'attribute': attributeBar,
+                'cartoonGenres': cartoonGenres,
+                'genres': genres,
+                auth: req.session.auth,
+                filter: req.session.filter,
+                status: req.session.status,
+                admin: req.session.admin,
+                active: req.session.active,
+                count: req.session.count,
+                category: req.session.category,
+            });
         });
     }
 }

@@ -17,7 +17,7 @@ model items {
   genre        String?    @db.VarChar(255)
   country      String?    @db.VarChar(255)
   type         Int?       @db.Int       
-  year         Int?       @db.Int
+  year         String?    @db.VarChar(255)
   description  String?    @db.Text
   age          Float?     @db.Float
   producer     String?    @db.VarChar(255)
@@ -80,25 +80,27 @@ model categories {
   name    String? @db.VarChar(255)
 }
 
-model country {
-  id      Int     @id @default(autoincrement())
-  name    String? @db.VarChar(255)
-}
-
-model years {
-  id      Int     @id @default(autoincrement())
-  name    String? @db.VarChar(255)
-  date    Int?    @db.Int
-}
-
-
-
-model filters {
+model attribute {
   id       Int     @id @default(autoincrement())
-  name     String? @db.VarChar(255)
-  title    String? @db.VarChar(255)
-}
+  name     String  @db.VarChar(255)
+  tag      String  @db.VarChar(255)
 
+  attribute_values   attribute_attribute_values[]
+}
+model attribute_values {
+  id       Int     @id @default(autoincrement())
+  name      String? @db.VarChar(255)
+
+  attribute   attribute_attribute_values[]
+}
+model attribute_attribute_values {
+  relAttribute         attribute        @relation(fields:[attributeId], references: [id])
+  attributeId             Int
+  relAttribute_value   attribute_values @relation(fields:[attribute_valueId], references: [id])
+  attribute_valueId       Int
+
+  @@id([attributeId, attribute_valueId])
+}
 
 model cartoonGenres {
   id       Int     @id @default(autoincrement())

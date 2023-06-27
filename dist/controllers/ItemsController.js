@@ -72,11 +72,35 @@ class ItemsController {
     }
     Add(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const genres = yield prisma.genres.findMany({});
+            const attribute = yield prisma.attribute.findMany({
+                where: {
+                    id: 1
+                },
+                select: {
+                    attribute_values: {
+                        select: {
+                            relAttribute_value: {
+                                select: {
+                                    name: true,
+                                    id: true
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            let arr = [];
+            for (let i = 0; i < attribute[0].attribute_values.length; i++) {
+                // console.log(attribute[0].attribute_values[i].relAttribute_value.name)
+                arr.push({
+                    name: attribute[0].attribute_values[i].relAttribute_value.name,
+                    id: attribute[0].attribute_values[i].relAttribute_value.id
+                });
+            }
             const categories = yield prisma.categories.findMany({});
             const items = yield prisma.items.findMany({});
             res.render('items/create', {
-                'genres': genres,
+                'genres': arr,
                 'items': items,
                 'categories': categories,
                 auth: req.session.auth,
@@ -99,12 +123,12 @@ class ItemsController {
             }
             let arr = [];
             for (let i = 0; i < one.length; i++) {
-                let genres = yield prisma.genres.findMany({
+                let attribute_values = yield prisma.attribute_values.findMany({
                     where: {
                         id: Number(one[i])
                     }
                 });
-                arr.push(genres[0].name);
+                arr.push(attribute_values[0].name);
             }
             const items = yield prisma.items.create({
                 data: {
@@ -119,7 +143,7 @@ class ItemsController {
                     type: Number(req.body.check__radio),
                     country: country,
                     age: age,
-                    year: Number(year),
+                    year: String(year),
                     genre: String(arr),
                     status: status,
                     video: video,
@@ -127,7 +151,7 @@ class ItemsController {
                 }
             });
             for (let i = 0; i < one.length; i++) {
-                let genres = yield prisma.genres.findMany({
+                let attribute_values = yield prisma.attribute_values.findMany({
                     where: {
                         id: Number(one[i])
                     }
@@ -135,7 +159,7 @@ class ItemsController {
                 yield prisma.items__genres.create({
                     data: {
                         itemId: items.id,
-                        genreId: genres[0].id
+                        genreId: attribute_values[0].id
                     }
                 });
             }

@@ -6,13 +6,13 @@
 
     
         <div class="hollow"></div>        
-            <% for (let i=0; i < country.length; i++) { %>
+            <% for (let i=0; i < attribute_values.length; i++) { %>
 
-                <a href="/from/country/<%= country[i].name %>" >
+                <a href="/from/country/<%= attribute_values[i].name %>" >
                     <div class="genre__object" id="genres__object">
 
                         <h2 class="genres__name">
-                            <%= country[i].name %>
+                            <%= attribute_values[i].name %>
                         </h2>
                     </div>
                 </a>
@@ -21,4 +21,3 @@
 
 </div>
 <%- include('../particles/footer.ejs') %>
-

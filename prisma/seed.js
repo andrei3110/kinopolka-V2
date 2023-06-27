@@ -82,67 +82,7 @@ async function genres() {
         }
     );
 }
-async function years() {
-    const years = await prisma.years.createMany({
-        data: [
-            { 
-                name: "2023 год",
-                date: 2023
-            },
-            { 
-                name: "2022 год",
-                date: 2022
-            },
-            { 
-                name: "2021 год",
-                date: 2021
-            },
-            { 
-                name: "2020 год",
-                date: 2020
-            },
-            { 
-                name: "2019 год",
-                date: 2019
-            },
-            { 
-                name: "2018 год",
-                date: 2018
-            },
-            { 
-                name: "2017 год",
-                date: 2017
-            },
-            { 
-                name: "2016 год",
-                date: 2016
-            },
-            { 
-                name: "2015 год",
-                date: 2015
-            },
-            { 
-                name: "2010-ые годы",
-                date: 2010
-            },
-            { 
-                name: "2000-ые года",
-                date: 2000
-            },
-            { 
-                name: "1990-ые года",
-                date: 1990
-            },
-            { 
-                name: "1890-ые года",
-                date: 1890
-            },
-        ],  
-        skipDuplicates: true
-        }
-    );
-   
-}
+
 async function cartoonGenres() {
     const createGenre = await prisma.cartoonGenres.createMany({
         data: [
@@ -200,8 +140,8 @@ async function users() {
         data: [
             { 
                 name: "Admin" ,
-                password: '$2b$10$jOW3VhJ7k8lPagE4/S.BL.d67YNfmAtJsEXPMPzUe3f463SAKPWv2',
-                status:'подписка',
+                password: '$2b$10$jOW3VhJ7k8lPagE4/S.BL.d67YNfmAtJsEXPMPzUe3f463SAKPWv2',//311007
+                status:'подписка', 
                 avatar:'Alto.png',
                 type:"Admin"
 
@@ -212,33 +152,91 @@ async function users() {
     );
 }
 
-async function filters() {
-    const filters = await prisma.filters.createMany({
+
+async function attribute() {
+    const attribute = await prisma.attribute.createMany({
         data: [
             { 
-                name: "Жанры",
-                title:"genre"}, 
+                name: "жанры" ,
+                tag: "genre"
+            },  
             { 
-                name: "Годы",
-                title:"years"}, 
+                name: "страны" ,
+                tag : "country"
+            },
             { 
-                name: "Страны",
-                title: "Country"}, 
-            { 
-                name: "платные",
-                title: "subscribe"}, 
-            { 
-                name: "бесплатные",
-                title: "free"
-            }, 
+                name: "годы" ,
+                tag : "years"
+            },
         ],
         skipDuplicates: true
         }
     );
 }
-async function country() {
-    const country = await prisma.country.createMany({
+
+async function attribute_values() {
+    const attribute_values = await prisma.attribute_values.createMany({
         data: [
+            { 
+                name: "боевик" ,
+               
+            },
+            {
+                name: "комедии",
+         
+            },
+            { 
+                name: "романтика",
+               
+            },
+            { 
+                name: "драма",
+              
+            },
+            { 
+                name: "мелодрама",
+             
+            },
+            {
+                name: "триллер",
+               
+            },
+            {
+                name: "исторический",
+               
+            },
+            {  
+                name: "трагедия",
+             
+            },
+            {
+                name: "фантастика",
+             
+                },
+            { 
+                name: "приключения",
+            
+            },
+            { 
+                name: "семейный",
+               
+            },
+            { 
+                name: "детский",
+           
+            },
+            {
+                 name: "детектив",
+          
+            },
+            { 
+                name: "мистика",
+            
+            },
+            {
+                 name: "криминал",
+             
+            },    
             { 
                 name: "Россия" ,
             },  
@@ -278,15 +276,241 @@ async function country() {
             { 
                 name: "Дания" ,
             },
+            { 
+                name: "2023 год",
+              
+            },
+            { 
+                name: "2022 год",
+               
+            },
+            { 
+                name: "2021 год",
+               
+            },
+            { 
+                name: "2020 год",
+             
+            },
+            { 
+                name: "2019 год",
+           
+            },
+            { 
+                name: "2018 год",
+              
+            },
+            { 
+                name: "2017 год",
+            
+            },
+            { 
+                name: "2016 год",
+                
+            },
+            { 
+                name: "2015 год",
+              
+            },
+            { 
+                name: "2010-ые годы",
+           
+            },
+            { 
+                name: "2000-ые года",
+            
+            },
+            { 
+                name: "1990-ые года",
+               
+            },
+            { 
+                name: "1890-ые года",
+            },
 
         ],
         skipDuplicates: true
         }
     );
 }
-country()
-years()
-filters()
+
+async function attribute_attribute_values() {
+    const attribute_attribute_values = await prisma.attribute_attribute_values.createMany({
+        data: [
+            { 
+                attributeId: 1,
+                attribute_valueId:1
+            },  
+            { 
+                attributeId: 1,
+                attribute_valueId:2
+            },
+            { 
+                attributeId: 1,
+                attribute_valueId:3
+            },
+            { 
+                attributeId: 1,
+                attribute_valueId:4
+            },
+            { 
+                attributeId: 1,
+                attribute_valueId:5
+            },
+            { 
+                attributeId: 1,
+                attribute_valueId:6
+            },
+            { 
+                attributeId: 1,
+                attribute_valueId:7
+            },
+            { 
+                attributeId: 1,
+                attribute_valueId:8
+            },
+            { 
+                attributeId: 1,
+                attribute_valueId:9
+            },
+            { 
+                attributeId: 1,
+                attribute_valueId:10
+            },
+            { 
+                attributeId: 1,
+                attribute_valueId:11
+            },
+            { 
+                attributeId: 1,
+                attribute_valueId:12
+            },
+            { 
+                attributeId: 1,
+                attribute_valueId:13
+            },
+            { 
+                attributeId: 1,
+                attribute_valueId:14
+            },
+            { 
+                attributeId: 1,
+                attribute_valueId:15
+            },
+            { 
+                attributeId: 2,
+                attribute_valueId:16
+            },
+            { 
+                attributeId: 2,
+                attribute_valueId:17
+            },
+            { 
+                attributeId: 2,
+                attribute_valueId:18
+            },
+            { 
+                attributeId: 2,
+                attribute_valueId:19
+            },
+            { 
+                attributeId: 2,
+                attribute_valueId:20
+            },
+            { 
+                attributeId: 2,
+                attribute_valueId:21
+            },
+            { 
+                attributeId: 2,
+                attribute_valueId:22
+            },
+            { 
+                attributeId: 2,
+                attribute_valueId:23
+            },
+            { 
+                attributeId: 2,
+                attribute_valueId:24
+            },
+            { 
+                attributeId: 2,
+                attribute_valueId:25
+            },
+            { 
+                attributeId: 2,
+                attribute_valueId:26
+            },
+            { 
+                attributeId: 2,
+                attribute_valueId:27
+            },
+            { 
+                attributeId: 2,
+                attribute_valueId:28
+            },
+            { 
+                attributeId: 3,
+                attribute_valueId:29
+            },
+            { 
+                attributeId: 3,
+                attribute_valueId:30
+            },
+            { 
+                attributeId: 3,
+                attribute_valueId:31
+            },
+            { 
+                attributeId: 3,
+                attribute_valueId:32
+            },
+            { 
+                attributeId: 3,
+                attribute_valueId:33
+            },
+            { 
+                attributeId: 3,
+                attribute_valueId:34
+            },
+            { 
+                attributeId: 3,
+                attribute_valueId:35
+            },
+            { 
+                attributeId: 3,
+                attribute_valueId:36
+            },
+            { 
+                attributeId: 3,
+                attribute_valueId:37
+            },
+            { 
+                attributeId: 3,
+                attribute_valueId:38
+            },
+            { 
+                attributeId: 3,
+                attribute_valueId:39
+            },
+            { 
+                attributeId: 3,
+                attribute_valueId:40
+            },
+            { 
+                attributeId: 3,
+                attribute_valueId:41
+            },
+
+ 
+        ],
+        skipDuplicates: true
+        }
+    );
+}
+attribute_values()
+attribute_attribute_values() 
+attribute()
 category()
 genres()
 cartoonGenres()

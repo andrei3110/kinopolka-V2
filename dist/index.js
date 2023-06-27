@@ -52,7 +52,7 @@ app.get("/from/movies/:id", (req, res) => {
 app.get("/from/country/:name", (req, res) => {
     categoriesController.ByCountry(req, res);
 });
-app.get("/from/years/:date", (req, res) => {
+app.get("/from/years/:name", (req, res) => {
     categoriesController.ByYear(req, res);
 });
 app.get("/types/free", (req, res) => {
@@ -63,9 +63,6 @@ app.get("/types/subscribe", (req, res) => {
 });
 app.get("/from/cartoons/:id", (req, res) => {
     categoriesController.cartoons(req, res);
-});
-app.get("/movies", (req, res) => {
-    categoriesController.movies(req, res);
 });
 //AUTH//
 app.get("/register", (req, res) => {

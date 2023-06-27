@@ -34,7 +34,7 @@ export class AuthController {
                     avatar: 'default_avatar.jpg'
                 }
             });
-           
+            
             req.session.subscription = 'Free'
             req.session.name = name;
             req.session.userId = users.id
@@ -44,7 +44,7 @@ export class AuthController {
                 req.session.admin = true
             } else {
                 req.session.admin = false
-            }    
+            }
             addLog(` ${req.session.name} зарегистрировал аккаунт`)
             res.redirect('/home');
         }

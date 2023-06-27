@@ -1,8 +1,8 @@
 <div class="bar__tags">
     <div class="tags__wrapper">
         <div class="bar__menu">
-            <% for (let i=0; i < filters.length; i++) { %>
-                <a href="/filters/<%= filters[i].id %>" class="bar__btn"><%= filters[i].name %></a>
+            <% for (let i=0; i < attribute.length; i++) { %>
+                <a href="/filters/<%= attribute[i].id %>" class="bar__btn"><%= attribute[i].name %></a>
             <% } %>
         </div>
     </div>
